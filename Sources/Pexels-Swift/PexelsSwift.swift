@@ -3,17 +3,18 @@ import Combine
 
 /// A Swift wrapper for the [Pexels API](https://www.pexels.com/api/)
 public class PexelsSwift {
+
     internal init() {}
 
     /// The singleton instance of ``PexelsSwift``
     public static let shared: PexelsSwift = .init()
 
-    private var cancelable: AnyCancellable?
-
-    private static let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
-
+    /// The HTTP-Header field for the API Key
     private let apiHeader: String = "Authorization"
 
+    /// The API key
+    ///
+    /// Set through ``setAPIKey(_:)``.
     private var apiKey: String = ""
 
     // MARK: - Public Methods
@@ -95,6 +96,10 @@ public class PexelsSwift {
 
     // MARK: - Private Methods
 
+    private var cancelable: AnyCancellable?
+
+    private static let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
+
     private func fetchPhotos(
         _ type: StreamType = .curated,
         searchText query: String? = nil,
@@ -139,19 +144,5 @@ public class PexelsSwift {
                     continuation.resume(returning: wrapper.photos ?? wrapper.media ?? [])
                 })
         }
-    }
-
-    private func url(for type: StreamType, collectionID: String) -> URLComponents {
-        switch type {
-        case .curated: return URLComponents(string: PSURL.curated)!
-        case .search: return URLComponents(string: PSURL.search)!
-        case .collections: return URLComponents(string: PSURL.collections + "/" + collectionID)!
-        }
-    }
-
-    private func url(for type: StreamType) -> String {
-        if type == .curated { return PSURL.curated }
-        if type == .search { return PSURL.search }
-        return ""
     }
 }
