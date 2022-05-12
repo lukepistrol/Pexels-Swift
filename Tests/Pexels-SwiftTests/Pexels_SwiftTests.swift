@@ -4,12 +4,21 @@ import XCTest
 final class Pexels_SwiftTests: XCTestCase {
 
 
-    func testExample() async throws {
+    func testFeed() async throws {
         let pexels = PexelsSwift.shared
         pexels.setAPIKey(apiKey)
 
-        let photos = await pexels.fetch()
+        let photos = await pexels.getCuratedPhotos()
 
-        print(photos.count)
+        XCTAssertEqual(10, photos.count)
+    }
+
+    func testCategories() async throws {
+        let pexels = PexelsSwift.shared
+        pexels.setAPIKey(apiKey)
+
+        let categories = await pexels.getCategories()
+
+        XCTAssertEqual(10, categories.count)
     }
 }

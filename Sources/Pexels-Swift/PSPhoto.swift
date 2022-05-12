@@ -9,21 +9,25 @@ import Foundation
 
 public struct PSPhoto: Identifiable, Codable, Equatable {
 
-    public var id: Int
-    public var url: String
+    enum CodingKeys: String, CodingKey {
+        case id, url, width, height, photographer
+        case alternateDescription = "alt"
+        case source = "src"
+        case photographerURL = "photographer_url"
+        case photographerID = "photographer_id"
+        case averageColor = "avg_color"
+    }
 
+    public var id: Int
     public var width: Int
     public var height: Int
-
-    public var src: Dictionary<Size.RawValue,String>
-
-    public var avgColor: String { return avg_color }
-
+    public var url: String
     public var photographer: String
-
-    private var photographer_url: String
-    private var photographer_id: Int
-    private var avg_color: String
+    public var photographerURL: String
+    public var photographerID: Int
+    public var averageColor: String
+    public var source: Dictionary<Size.RawValue,String>
+    public var alternateDescription: String
 
     public enum Size: String {
         case original, large2x, large, medium, small, portrait, landscape, tiny

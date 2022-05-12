@@ -4,6 +4,7 @@ import Combine
 public class PexelsSwift {
     private init() {}
 
+    /// The singleton instance of ``PexelsSwift``
     public static let shared: PexelsSwift = .init()
 
     private var cancelable: AnyCancellable?
@@ -14,37 +15,79 @@ public class PexelsSwift {
 
     private var apiKey: String = ""
 
+    // MARK: - Public Methods
+
+    /// Set the API key to make API Queries.
+    ///
+    /// An API Key can be obtained from [here](https://www.pexels.com/api/)
+    /// - Parameter key: The API Key
     public func setAPIKey(_ key: String) {
         self.apiKey = key
     }
 
-    public func fetchCollectionCategories(page: Int = 1, completion: @escaping (Array<CollectionCategory>) -> ()) {
-        var req = URLRequest(url: URL(string: "https://api.pexels.com/v1/collections/featured?page=\(page)")!)
+    public func getCategories(
+        page: Int = 1,
+        count results: Int = 10
+    ) async -> Array<CollectionCategory> {
+        var req = URLRequest(url: URL(string: "https://api.pexels.com/v1/collections/featured?page=\(page)&per_page=\(results)")!)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
-        cancelable = URLSession.shared.dataTaskPublisher(for: req)
-            .subscribe(on: Self.sessionProcessingQueue)
-            .map({ return $0.data })
-            .decode(type: CollectionCategoriesWrapper.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { subCompletion in
-                switch subCompletion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print(error)
-                }
-            }, receiveValue: { (wrapper) in
-                completion(wrapper.collections)
-            })
+        return await withCheckedContinuation { continuation in
+            cancelable = URLSession.shared.dataTaskPublisher(for: req)
+                .subscribe(on: Self.sessionProcessingQueue)
+                .map({ return $0.data })
+                .decode(type: CollectionResults.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { subCompletion in
+                    switch subCompletion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        print(error)
+                    }
+                }, receiveValue: { (wrapper) in
+                    continuation.resume(returning: wrapper.collections)
+                })
+        }
     }
 
-    public func fetch(_ type: StreamType = .curated,
-                      searchText query: String? = nil,
-                      page: Int = 1) async -> Array<PSPhoto> {
-        var url1: URLComponents = url(for: type, collectionID: query ?? "")
+    /// Get a list of curated ``PSPhoto``
+    /// - Parameters:
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    /// - Returns: An array of ``PSPhoto``
+    public func getCuratedPhotos(
+        page: Int = 1,
+        count results: Int = 10
+    ) async -> Array<PSPhoto> {
+        await fetchPhotos(.curated, searchText: nil, page: page, results: results)
+    }
+
+    /// Get a list of ``PSPhoto`` based on a search query
+    /// - Parameters:
+    ///   - search: Your search text
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    /// - Returns: An array of ``PSPhoto``
+    public func getPhotos(
+        search: String,
+        page: Int = 1,
+        count results: Int = 10
+    ) async -> Array<PSPhoto> {
+        await fetchPhotos(.search, searchText: search, page: page, results: 10)
+    }
+
+    // MARK: - Private Methods
+
+    private func fetchPhotos(
+        _ type: StreamType = .curated,
+        searchText query: String? = nil,
+        page: Int = 1,
+        results: Int = 10
+    ) async -> Array<PSPhoto> {
+        var components: URLComponents = url(for: type, collectionID: query ?? "")
         var param: Array<URLQueryItem> = [.init(name: "page", value: "\(page)"),
-                                          .init(name: "per_page", value: "80")]
+                                          .init(name: "per_page", value: "\(results)")]
 
         switch type {
         case .curated:
@@ -58,12 +101,8 @@ public class PexelsSwift {
             break
         }
 
-        url1.queryItems = param
-        guard let url2 = url1.url else { return [] }
-        return await fetch(url2)
-    }
-
-    private func fetch(_ url: URL) async -> Array<PSPhoto> {
+        components.queryItems = param
+        guard let url = components.url else { return [] }
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
@@ -71,7 +110,7 @@ public class PexelsSwift {
             cancelable = URLSession.shared.dataTaskPublisher(for: req)
                 .subscribe(on: Self.sessionProcessingQueue)
                 .map({ return $0.data })
-                .decode(type: ResultsWrapper.self, decoder: JSONDecoder())
+                .decode(type: ContentResults.self, decoder: JSONDecoder())
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { subCompletion in
                     switch subCompletion {
@@ -98,28 +137,5 @@ public class PexelsSwift {
         if type == .curated { return PSURL.curated }
         if type == .search { return PSURL.search }
         return ""
-    }
-
-    struct ResultsWrapper: Codable {
-        var photos: Array<PSPhoto>? // When searching, or featured
-        var media: Array<PSPhoto>? // When fetching from collections
-        var page: Int
-        var per_page: Int
-        var total_results: Int
-        var prev_page: String?
-        var next_page: String?
-    }
-
-    struct CollectionCategoriesWrapper: Codable {
-        var collections: Array<CollectionCategory>
-        var page: Int
-        var per_page: Int
-        var total_results: Int
-        var prev_page: String?
-        var next_page: String?
-    }
-
-    public enum StreamType: String {
-        case curated, search, collections
     }
 }

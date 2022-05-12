@@ -9,15 +9,20 @@ import Foundation
 
 public struct CollectionCategory: Identifiable, Codable, Equatable {
 
+    enum CodingKeys: String, CodingKey {
+        case id, title, description
+        case isPrivate = "private"
+        case mediaCount = "media_count"
+        case photosCount = "photos_count"
+        case videosCount = "videos_count"
+    }
+
     public var id: String
+    public var title: String
     public var description: String
-
-    public var titleText: String { title.trimmingCharacters(in: .whitespaces) }
-    public var photosCount: Int { photos_count }
-
-    private var title: String
-    private var media_count: Int
-    private var photos_count: Int
-    private var videos_count: Int
+    public var isPrivate: Bool
+    public var mediaCount: Int
+    public var photosCount: Int
+    public var videosCount: Int 
 
 }
