@@ -1,8 +1,9 @@
 import Foundation
 import Combine
 
+/// A Swift wrapper for the [Pexels API](https://www.pexels.com/api/)
 public class PexelsSwift {
-    private init() {}
+    internal init() {}
 
     /// The singleton instance of ``PexelsSwift``
     public static let shared: PexelsSwift = .init()
@@ -42,8 +43,8 @@ public class PexelsSwift {
                     switch subCompletion {
                     case .finished:
                         break
-                    case .failure(let error):
-                        print(error)
+                    case .failure(_):
+                        continuation.resume(returning: [])
                     }
                 }, receiveValue: { (wrapper) in
                     continuation.resume(returning: wrapper.collections)
@@ -75,6 +76,21 @@ public class PexelsSwift {
         count results: Int = 10
     ) async -> Array<PSPhoto> {
         await fetchPhotos(.search, searchText: search, page: page, results: 10)
+    }
+
+
+    /// Get a list of ``PSPhoto`` based on a gived category ID
+    /// - Parameters:
+    ///   - categoryID: The category ID
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    /// - Returns: An array of ``PSPhoto``
+    public func getPhotos(
+        for categoryID: String,
+        page: Int = 1,
+        count results: Int = 10
+    ) async -> Array<PSPhoto> {
+        await fetchPhotos(.collections, searchText: categoryID, page: page, results: results)
     }
 
     // MARK: - Private Methods
@@ -116,8 +132,8 @@ public class PexelsSwift {
                     switch subCompletion {
                     case .finished:
                         break
-                    case .failure(let error):
-                        print(error)
+                    case .failure(_):
+                        continuation.resume(returning: [])
                     }
                 }, receiveValue: { (wrapper) in
                     continuation.resume(returning: wrapper.photos ?? wrapper.media ?? [])
