@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension PexelsSwift {
+internal extension PexelsSwift {
     enum StreamType: String {
         case curated, search, collections
     }

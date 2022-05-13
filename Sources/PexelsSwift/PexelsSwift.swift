@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-/// A Swift wrapper for the [Pexels API](https://www.pexels.com/api/)
+/// A singleton class for making API calls.
 public class PexelsSwift {
 
     internal init() {}

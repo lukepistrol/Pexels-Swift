@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A structure representing a Collection Category and its metadata.
 public struct CollectionCategory: Identifiable, Codable, Equatable {
 
     enum CodingKeys: String, CodingKey {

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A structure representing a Photo and its metadata.
 public struct PSPhoto: Identifiable, Codable, Equatable {
 
     enum CodingKeys: String, CodingKey {
