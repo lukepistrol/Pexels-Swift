@@ -40,4 +40,5 @@ let results = await pexels.getCuratedPhotos()
 ### Structures
 
 - ``PexelsSwift/PSPhoto``
+- ``PexelsSwift/PSVideo``
 - ``PexelsSwift/PSCollectionCategory``

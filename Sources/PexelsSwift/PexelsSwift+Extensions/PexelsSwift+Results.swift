@@ -8,16 +8,17 @@
 import Foundation
 
 extension PexelsSwift {
-    struct ContentResults: Codable {
+    struct ContentResults<T: Codable>: Codable {
         enum CodingKeys: String, CodingKey {
-            case photos, media, page
+            case photos, media, videos, page
             case perPage = "per_page"
             case totalResults = "total_results"
             case previousPage = "prev_page"
             case nextPage = "next_page"
         }
         var photos: Array<PSPhoto>? // When searching, or featured
-        var media: Array<PSPhoto>? // When fetching from collections
+        var media: Array<T>? // When fetching from collections
+        var videos: Array<PSVideo>? // When fetching videos
         var page: Int
         var perPage: Int
         var totalResults: Int

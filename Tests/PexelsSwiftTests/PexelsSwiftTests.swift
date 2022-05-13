@@ -21,12 +21,28 @@ final class Pexels_SwiftTests: XCTestCase {
         XCTAssertNotNil(photo)
     }
 
-    func testFeed() async throws {
+    func testCuratedPhotos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setAPIKey(apiKey)
         let photos = await pexels.getCuratedPhotos()
 
-        XCTAssertEqual(10, photos.count)
+        XCTAssertFalse(photos.isEmpty)
+    }
+
+    func testSearchPhotos() async throws {
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setAPIKey(apiKey)
+        let photos = await pexels.searchPhotos("Ocean")
+
+        XCTAssertFalse(photos.isEmpty)
+    }
+
+    func testGetPhotosFromCollection() async throws {
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setAPIKey(apiKey)
+        let photos = await pexels.getPhotos(for: "hoxyyjd")
+
+        XCTAssertFalse(photos.isEmpty)
     }
 
     func testCategories() async throws {
@@ -34,20 +50,46 @@ final class Pexels_SwiftTests: XCTestCase {
         pexels.setAPIKey(apiKey)
         let categories = await pexels.getCategories()
 
-        XCTAssertEqual(10, categories.count)
+        XCTAssertFalse(categories.isEmpty)
     }
 
-    func testFeedNoAPIKey() async throws {
+    func testNoAPIKey() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         let photos = await pexels.getCuratedPhotos()
 
-        XCTAssertEqual(0, photos.count)
+        XCTAssertTrue(photos.isEmpty)
     }
 
-    func testCategoriesNoAPIKey() async throws {
+    func testGetVideoByID() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        let categories = await pexels.getCategories()
+        pexels.setAPIKey(apiKey)
+        let video = await pexels.getVideo(by: 6466763)
 
-        XCTAssertEqual(0, categories.count)
+        XCTAssertNotNil(video)
+    }
+
+    func testGetPopularVideos() async throws {
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setAPIKey(apiKey)
+
+        let videos = await pexels.getPopularVideos()
+        XCTAssertFalse(videos.isEmpty)
+
+    }
+
+    func testSearchVideos() async throws {
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setAPIKey(apiKey)
+        let videos = await pexels.searchVideos("Ocean")
+
+        XCTAssertFalse(videos.isEmpty)
+    }
+
+    func testGetVideosFromCollection() async throws {
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setAPIKey(apiKey)
+        let videos = await pexels.getVideos(for: "8xntbhr")
+
+        XCTAssertFalse(videos.isEmpty)
     }
 }

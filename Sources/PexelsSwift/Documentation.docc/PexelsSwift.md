@@ -31,6 +31,13 @@ pexels.setAPIKey("YOUR_SECRET_API_KEY")
 ### Photos
 
 - ``getPhoto(by:)``
-- ``getPhotos(search:page:count:)``
 - ``getPhotos(for:page:count:)``
 - ``getCuratedPhotos(page:count:)``
+- ``searchPhotos(_:orientation:size:color:page:count:)``
+
+### Videos
+
+- ``getVideo(by:)``
+- ``getVideos(for:page:count:)``
+- ``getPopularVideos(minimumWidth:minimumHeight:minimumDuration:maximumDuration:page:count:)``
+- ``searchVideos(_:orientation:size:page:results:)``
