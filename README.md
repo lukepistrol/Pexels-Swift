@@ -13,7 +13,7 @@ dependencies: [
 ## Usage
 
 ```swift
-import Pexels_Swift
+import PexelsSwift
 
 // access the singleton instance
 let pexels = PexelsSwift.shared

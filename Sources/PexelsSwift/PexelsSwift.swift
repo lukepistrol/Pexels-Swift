@@ -27,6 +27,11 @@ public class PexelsSwift {
         self.apiKey = key
     }
 
+    /// Get a list of ``CollectionCategory``
+    /// - Parameters:
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    /// - Returns: An array of ``CollectionCategory``
     public func getCategories(
         page: Int = 1,
         count results: Int = 10
@@ -49,6 +54,35 @@ public class PexelsSwift {
                     }
                 }, receiveValue: { (wrapper) in
                     continuation.resume(returning: wrapper.collections)
+                })
+        }
+    }
+
+    /// Gets a single ``PSPhoto`` based on a given ID
+    ///
+    /// If the request fails this will return `nil`
+    /// - Parameter id: The ID of the Photo
+    /// - Returns: A ``PSPhoto`` or `nil`
+    public func getPhoto(by id: Int) async -> PSPhoto? {
+        let url = URL(string: PSURL.photoByID + "/\(id)")!
+        var req = URLRequest(url: url)
+        req.setValue(apiKey, forHTTPHeaderField: apiHeader)
+
+        return await withCheckedContinuation { continuation in
+            cancelable = URLSession.shared.dataTaskPublisher(for: req)
+                .subscribe(on: Self.sessionProcessingQueue)
+                .map({ $0.data })
+                .decode(type: PSPhoto.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(_):
+                        continuation.resume(returning: nil)
+                    }
+                }, receiveValue: { photo in
+                    continuation.resume(returning: photo)
                 })
         }
     }
@@ -78,7 +112,6 @@ public class PexelsSwift {
     ) async -> Array<PSPhoto> {
         await fetchPhotos(.search, searchText: search, page: page, results: 10)
     }
-
 
     /// Get a list of ``PSPhoto`` based on a gived category ID
     /// - Parameters:

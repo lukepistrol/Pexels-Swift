@@ -4,23 +4,23 @@
 import PackageDescription
 
 let package = Package(
-    name: "Pexels-Swift",
+    name: "PexelsSwift",
     platforms: [
         .iOS(.v13),
         .macOS(.v11)
     ],
     products: [
         .library(
-            name: "Pexels-Swift",
-            targets: ["Pexels-Swift"]),
+            name: "PexelsSwift",
+            targets: ["PexelsSwift"]),
     ],
     dependencies: [],
     targets: [
         .target(
-            name: "Pexels-Swift",
+            name: "PexelsSwift",
             dependencies: []),
         .testTarget(
-            name: "Pexels-SwiftTests",
-            dependencies: ["Pexels-Swift"]),
+            name: "PexelsSwiftTests",
+            dependencies: ["PexelsSwift"]),
     ]
 )

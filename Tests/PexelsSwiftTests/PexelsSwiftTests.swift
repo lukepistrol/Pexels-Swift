@@ -1,5 +1,5 @@
 import XCTest
-@testable import Pexels_Swift
+@testable import PexelsSwift
 
 final class Pexels_SwiftTests: XCTestCase {
 
@@ -11,6 +11,14 @@ final class Pexels_SwiftTests: XCTestCase {
 
     override func tearDown() async throws {
         self.pexels = nil
+    }
+
+    func testGetPhotoByID() async throws {
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setAPIKey(apiKey)
+        let photo = await pexels.getPhoto(by: 2014422)
+        
+        XCTAssertNotNil(photo)
     }
 
     func testFeed() async throws {
