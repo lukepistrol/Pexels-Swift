@@ -8,7 +8,7 @@
 import Foundation
 
 /// A structure representing a Collection Category and its metadata.
-public struct CollectionCategory: Identifiable, Codable, Equatable {
+public struct PSCollectionCategory: Identifiable, Codable, Equatable {
 
     enum CodingKeys: String, CodingKey {
         case id, title, description
@@ -18,12 +18,25 @@ public struct CollectionCategory: Identifiable, Codable, Equatable {
         case videosCount = "videos_count"
     }
 
+    /// The ID of the collection.
     public var id: String
+
+    /// The name of the collection.
     public var title: String
+
+    /// The description of the collection.
     public var description: String
+
+    /// A flag indicating whether or not the collection is marked as private.
     public var isPrivate: Bool
+
+    /// The total number of media included in this collection.
     public var mediaCount: Int
+
+    /// The total number of photos included in this collection.
     public var photosCount: Int
+
+    /// The total number of videos included in this collection.
     public var videosCount: Int 
 
 }

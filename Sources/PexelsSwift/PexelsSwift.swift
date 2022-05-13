@@ -35,7 +35,7 @@ public class PexelsSwift {
     public func getCategories(
         page: Int = 1,
         count results: Int = 10
-    ) async -> Array<CollectionCategory> {
+    ) async -> Array<PSCollectionCategory> {
         var req = URLRequest(url: URL(string: "https://api.pexels.com/v1/collections/featured?page=\(page)&per_page=\(results)")!)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 

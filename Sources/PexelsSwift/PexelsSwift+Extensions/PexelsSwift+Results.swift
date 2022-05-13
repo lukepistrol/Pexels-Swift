@@ -34,7 +34,7 @@ extension PexelsSwift {
             case nextPage = "next_page"
         }
 
-        var collections: Array<CollectionCategory>
+        var collections: Array<PSCollectionCategory>
         var page: Int
         var perPage: Int
         var totalResults: Int
