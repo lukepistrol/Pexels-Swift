@@ -72,7 +72,7 @@ final class Pexels_SwiftTests: XCTestCase {
         }
     }
 
-    func testCategories() async throws {
+    func testCollections() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setAPIKey(apiKey)
         let result = await pexels.getCollections()
