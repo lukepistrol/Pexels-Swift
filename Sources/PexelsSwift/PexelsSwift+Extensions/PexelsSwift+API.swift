@@ -1,5 +1,5 @@
 //
-//  PexelsSwift+PSURL.swift
+//  PexelsSwift+API.swift
 //  
 //
 //  Created by Lukas Pistrol on 12.05.22.
@@ -8,7 +8,7 @@
 import Foundation
 
 internal extension PexelsSwift {
-    enum PSURL {
+    enum API {
         static let searchPhotos: String = "https://api.pexels.com/v1/search"
         static let curatedPhotos: String = "https://api.pexels.com/v1/curated"
         static let collections: String = "https://api.pexels.com/v1/collections"

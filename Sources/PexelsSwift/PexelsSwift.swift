@@ -95,7 +95,7 @@ public class PexelsSwift {
     /// - Returns: A result type of ``PhotoResult``
     public func getPhoto(by id: Int) async -> PhotoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        let url = URL(string: PSURL.photoByID + "/\(id)")!
+        let url = URL(string: API.photoByID + "/\(id)")!
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
@@ -127,7 +127,7 @@ public class PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> PhotosResult {
-        var components: URLComponents = .init(string: PSURL.curatedPhotos)!
+        var components: URLComponents = .init(string: API.curatedPhotos)!
         let param: Array<URLQueryItem> = [.init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
 
@@ -150,7 +150,7 @@ public class PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> PhotosResult {
-        var components: URLComponents = .init(string: PSURL.searchPhotos)!
+        var components: URLComponents = .init(string: API.searchPhotos)!
         var param: Array<URLQueryItem> = [.init(name: "query", value: query),
                                           .init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
@@ -181,7 +181,7 @@ public class PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> PhotosResult {
-        var components: URLComponents = .init(string: PSURL.collections + "/\(categoryID)")!
+        var components: URLComponents = .init(string: API.collections + "/\(categoryID)")!
         let param: Array<URLQueryItem> = [.init(name: "type", value: "photos"),
                                           .init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
@@ -200,7 +200,7 @@ public class PexelsSwift {
     /// - Returns: A result type of ``VideoResult``
     public func getVideo(by id: Int) async -> VideoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        let url = URL(string: PSURL.videoByID + "/\(id)")!
+        let url = URL(string: API.videoByID + "/\(id)")!
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
@@ -240,7 +240,7 @@ public class PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> VideosResult {
-        var components: URLComponents = .init(string: PSURL.popularVideos)!
+        var components: URLComponents = .init(string: API.popularVideos)!
         var param: Array<URLQueryItem> = [.init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
         if let minimumWidth = minimumWidth {
@@ -276,7 +276,7 @@ public class PexelsSwift {
         page: Int = 1,
         results: Int = 10
     ) async -> VideosResult {
-        var components: URLComponents = .init(string: PSURL.searchVideos)!
+        var components: URLComponents = .init(string: API.searchVideos)!
         var param: Array<URLQueryItem> = [.init(name: "query", value: query),
                                           .init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
@@ -303,7 +303,7 @@ public class PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> VideosResult {
-        var components: URLComponents = .init(string: PSURL.collections + "/\(categoryID)")!
+        var components: URLComponents = .init(string: API.collections + "/\(categoryID)")!
         let param: Array<URLQueryItem> = [.init(name: "type", value: "videos"),
                                           .init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
