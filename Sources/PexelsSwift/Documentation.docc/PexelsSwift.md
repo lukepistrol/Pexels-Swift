@@ -26,7 +26,8 @@ pexels.setAPIKey("YOUR_SECRET_API_KEY")
 
 ### Categories
 
-- ``getCategories(page:count:)``
+- ``getCollections(page:count:)``
+- ``CollectionResult``
 
 ### Photos
 
@@ -34,6 +35,8 @@ pexels.setAPIKey("YOUR_SECRET_API_KEY")
 - ``getPhotos(for:page:count:)``
 - ``getCuratedPhotos(page:count:)``
 - ``searchPhotos(_:orientation:size:color:page:count:)``
+- ``PhotosResult``
+- ``PhotoResult``
 
 ### Videos
 
@@ -41,3 +44,8 @@ pexels.setAPIKey("YOUR_SECRET_API_KEY")
 - ``getVideos(for:page:count:)``
 - ``getPopularVideos(minimumWidth:minimumHeight:minimumDuration:maximumDuration:page:count:)``
 - ``searchVideos(_:orientation:size:page:results:)``
+- ``VideosResult``
+- ``VideoResult``
+
+
+

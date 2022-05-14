@@ -6,6 +6,22 @@ public class PexelsSwift {
 
     internal init() {}
 
+    /// Result type for an array of ``PSVideo``.
+    public typealias VideosResult = Result<Array<PSVideo>, PSError>
+
+    /// Result type for a single ``PSVideo``.
+    public typealias VideoResult = Result<PSVideo, PSError>
+
+    /// Result type for an array of ``PSPhoto``.
+    public typealias PhotosResult = Result<Array<PSPhoto>, PSError>
+
+    /// Result type for a single ``PSPhoto``.
+    public typealias PhotoResult = Result<PSPhoto, PSError>
+
+    /// Result type for an array of ``PSCollectionCategory``.
+    public typealias CollectionResult = Result<Array<PSCollectionCategory>, PSError>
+    
+
     /// The singleton instance of ``PexelsSwift``
     public static let shared: PexelsSwift = .init()
 
@@ -33,11 +49,12 @@ public class PexelsSwift {
     /// - Parameters:
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
-    /// - Returns: An array of ``PSCollectionCategory``
-    public func getCategories(
+    /// - Returns: A result type of ``CollectionResult``
+    public func getCollections(
         page: Int = 1,
         count results: Int = 10
-    ) async -> Array<PSCollectionCategory> {
+    ) async -> CollectionResult {
+        guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         var req = URLRequest(url: URL(string: "https://api.pexels.com/v1/collections/featured?page=\(page)&per_page=\(results)")!)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
@@ -51,11 +68,13 @@ public class PexelsSwift {
                     switch subCompletion {
                     case .finished:
                         break
-                    case .failure(_):
-                        continuation.resume(returning: [])
+                    case .failure(let error):
+                        continuation.resume(
+                            returning: .failure(.generic(error.localizedDescription))
+                        )
                     }
                 }, receiveValue: { (wrapper) in
-                    continuation.resume(returning: wrapper.collections)
+                    continuation.resume(returning: .success(wrapper.collections))
                 })
         }
     }
@@ -66,8 +85,9 @@ public class PexelsSwift {
     ///
     /// If the request fails this will return `nil`
     /// - Parameter id: The ID of the Photo
-    /// - Returns: A ``PSPhoto`` or `nil`
-    public func getPhoto(by id: Int) async -> PSPhoto? {
+    /// - Returns: A result type of ``PhotoResult``
+    public func getPhoto(by id: Int) async -> PhotoResult {
+        guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         let url = URL(string: PSURL.photoByID + "/\(id)")!
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
@@ -82,11 +102,11 @@ public class PexelsSwift {
                     switch completion {
                     case .finished:
                         break
-                    case .failure(_):
-                        continuation.resume(returning: nil)
+                    case .failure(let error):
+                        continuation.resume(returning: .failure(.generic(error.localizedDescription)))
                     }
                 }, receiveValue: { photo in
-                    continuation.resume(returning: photo)
+                    continuation.resume(returning: .success(photo))
                 })
         }
     }
@@ -95,17 +115,17 @@ public class PexelsSwift {
     /// - Parameters:
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
-    /// - Returns: An array of ``PSPhoto``
+    /// - Returns: A result type of ``PhotosResult``
     public func getCuratedPhotos(
         page: Int = 1,
         count results: Int = 10
-    ) async -> Array<PSPhoto> {
+    ) async -> PhotosResult {
         var components: URLComponents = .init(string: PSURL.curatedPhotos)!
         let param: Array<URLQueryItem> = [.init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
 
         components.queryItems = param
-        guard let url = components.url else { return [] }
+        guard let url = components.url else { return .failure(.badURL) }
         return await fetchPhotos(url: url)
     }
 
@@ -114,7 +134,7 @@ public class PexelsSwift {
     ///   - query: The search query.
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
-    /// - Returns: An array of ``PSPhoto``
+    /// - Returns: A result type of ``PhotosResult``
     public func searchPhotos(
         _ query: String,
         orientation: PSOrientation? = nil,
@@ -122,7 +142,7 @@ public class PexelsSwift {
         color: PSColor? = nil,
         page: Int = 1,
         count results: Int = 10
-    ) async -> Array<PSPhoto> {
+    ) async -> PhotosResult {
         var components: URLComponents = .init(string: PSURL.searchPhotos)!
         var param: Array<URLQueryItem> = [.init(name: "query", value: query),
                                           .init(name: "page", value: "\(page)"),
@@ -139,7 +159,7 @@ public class PexelsSwift {
         }
 
         components.queryItems = param
-        guard let url = components.url else { return [] }
+        guard let url = components.url else { return .failure(.badURL) }
         return await fetchPhotos(url: url)
     }
 
@@ -148,19 +168,19 @@ public class PexelsSwift {
     ///   - categoryID: The category ID
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
-    /// - Returns: An array of ``PSPhoto``
+    /// - Returns: A result type of ``PhotosResult``
     public func getPhotos(
         for categoryID: String,
         page: Int = 1,
         count results: Int = 10
-    ) async -> Array<PSPhoto> {
+    ) async -> PhotosResult {
         var components: URLComponents = .init(string: PSURL.collections + "/\(categoryID)")!
         let param: Array<URLQueryItem> = [.init(name: "type", value: "photos"),
                                           .init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
 
         components.queryItems = param
-        guard let url = components.url else { return [] }
+        guard let url = components.url else { return .failure(.badURL) }
         return await fetchPhotos(url: url)
     }
 
@@ -170,8 +190,9 @@ public class PexelsSwift {
     ///
     /// If the request fails this will return `nil`
     /// - Parameter id: The ID of the Video
-    /// - Returns: A ``PSVideo`` or `nil`
-    public func getVideo(by id: Int) async -> PSVideo? {
+    /// - Returns: A result type of ``VideoResult``
+    public func getVideo(by id: Int) async -> VideoResult {
+        guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         let url = URL(string: PSURL.videoByID + "/\(id)")!
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
@@ -186,11 +207,11 @@ public class PexelsSwift {
                     switch completion {
                     case .finished:
                         break
-                    case .failure(_):
-                        continuation.resume(returning: nil)
+                    case .failure(let error):
+                        continuation.resume(returning: .failure(.generic(error.localizedDescription)))
                     }
                 }, receiveValue: { video in
-                    continuation.resume(returning: video)
+                    continuation.resume(returning: .success(video))
                 })
         }
     }
@@ -203,7 +224,7 @@ public class PexelsSwift {
     ///   - maximumDuration: The maximum duration in seconds of the returned videos.
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
-    /// - Returns: An array of ``PSVideo``
+    /// - Returns: A result type of ``VideosResult``
     public func getPopularVideos(
         minimumWidth: Int? = nil,
         minimumHeight: Int? = nil,
@@ -211,7 +232,7 @@ public class PexelsSwift {
         maximumDuration: Int? = nil,
         page: Int = 1,
         count results: Int = 10
-    ) async -> Array<PSVideo> {
+    ) async -> VideosResult {
         var components: URLComponents = .init(string: PSURL.popularVideos)!
         var param: Array<URLQueryItem> = [.init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
@@ -229,7 +250,7 @@ public class PexelsSwift {
         }
 
         components.queryItems = param
-        guard let url = components.url else { return [] }
+        guard let url = components.url else { return .failure(.badURL) }
         return await fetchVideos(url: url)
     }
 
@@ -240,14 +261,14 @@ public class PexelsSwift {
     ///   - size: Minimum video size.
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
-    /// - Returns: An array of ``PSVideo``
+    /// - Returns: A result type of ``VideosResult``
     public func searchVideos(
         _ query: String,
         orientation: PSOrientation? = nil,
         size: PSSize? = nil,
         page: Int = 1,
         results: Int = 10
-    ) async -> Array<PSVideo> {
+    ) async -> VideosResult {
         var components: URLComponents = .init(string: PSURL.searchVideos)!
         var param: Array<URLQueryItem> = [.init(name: "query", value: query),
                                           .init(name: "page", value: "\(page)"),
@@ -260,7 +281,7 @@ public class PexelsSwift {
         }
 
         components.queryItems = param
-        guard let url = components.url else { return [] }
+        guard let url = components.url else { return .failure(.badURL) }
         return await fetchVideos(url: url)
     }
 
@@ -269,19 +290,19 @@ public class PexelsSwift {
     ///   - categoryID: The category ID
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
-    /// - Returns: An array of ``PSVideo``
+    /// - Returns: A result type of ``VideosResult``
     public func getVideos(
         for categoryID: String,
         page: Int = 1,
         count results: Int = 10
-    ) async -> Array<PSVideo> {
+    ) async -> VideosResult {
         var components: URLComponents = .init(string: PSURL.collections + "/\(categoryID)")!
         let param: Array<URLQueryItem> = [.init(name: "type", value: "videos"),
                                           .init(name: "page", value: "\(page)"),
                                           .init(name: "per_page", value: "\(results)")]
 
         components.queryItems = param
-        guard let url = components.url else { return [] }
+        guard let url = components.url else { return .failure(.badURL) }
         return await fetchVideos(url: url)
     }
 
@@ -293,8 +314,9 @@ public class PexelsSwift {
 
     /// Fetch ``PSPhoto`` from [`URL`](https://developer.apple.com/documentation/foundation/url)
     /// - Parameter url: The URL to fetch from.
-    /// - Returns: An array of ``PSPhoto``
-    private func fetchPhotos(url: URL) async -> Array<PSPhoto> {
+    /// - Returns: A result type of ``PhotosResult``
+    private func fetchPhotos(url: URL) async -> PhotosResult {
+        guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
@@ -308,19 +330,26 @@ public class PexelsSwift {
                     switch completion {
                     case .finished:
                         break
-                    case .failure(_):
-                        continuation.resume(returning: [])
+                    case .failure(let error):
+                        continuation.resume(returning: .failure(.generic(error.localizedDescription)))
                     }
                 }, receiveValue: { wrapper in
-                    continuation.resume(returning: wrapper.photos ?? wrapper.media ?? [])
+                    if let photos = wrapper.photos {
+                        continuation.resume(returning: .success(photos))
+                    } else if let media = wrapper.media {
+                        continuation.resume(returning: .success(media))
+                    } else {
+                        continuation.resume(returning: .failure(.noContent))
+                    }
                 })
         }
     }
 
     /// Fetch ``PSVideo`` from [`URL`](https://developer.apple.com/documentation/foundation/url)
     /// - Parameter url: The URL to fetch from.
-    /// - Returns: An array of ``PSVideo``
-    private func fetchVideos(url: URL) async -> Array<PSVideo> {
+    /// - Returns: A result type of ``VideosResult``
+    private func fetchVideos(url: URL) async -> VideosResult {
+        guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
@@ -334,11 +363,17 @@ public class PexelsSwift {
                     switch completion {
                     case .finished:
                         break
-                    case .failure(_):
-                        continuation.resume(returning: [])
+                    case .failure(let error):
+                        continuation.resume(returning: .failure(.generic(error.localizedDescription)))
                     }
                 }, receiveValue: { wrapper in
-                    continuation.resume(returning: wrapper.videos ?? wrapper.media ?? [])
+                    if let videos = wrapper.videos {
+                        continuation.resume(returning: .success(videos))
+                    } else if let media = wrapper.media {
+                        continuation.resume(returning: .success(media))
+                    } else {
+                        continuation.resume(returning: .failure(.noContent))
+                    }
                 })
         }
     }

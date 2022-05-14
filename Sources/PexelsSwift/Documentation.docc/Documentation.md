@@ -28,7 +28,14 @@ let pexels = PexelsSwift.shared
 pexels.setAPIKey("YOUR_API_KEY")
 
 // fetch images metadata
-let results = await pexels.getCuratedPhotos()
+let result = await pexels.getCuratedPhotos()
+
+switch result {
+case .failure(let error):
+    // handle error
+case .success(let photos):
+    // access photos
+}
 ```
 
 ## Topics
