@@ -25,8 +25,8 @@ public class PexelsSwift {
     /// Result type for a single ``PSPhoto``.
     public typealias PhotoResult = Result<PSPhoto, PSError>
 
-    /// Result type for an array of ``PSCollectionCategory``.
-    public typealias CollectionResult = Result<Array<PSCollectionCategory>, PSError>
+    /// Result type for an array of ``PSCollection``.
+    public typealias CollectionResult = Result<Array<PSCollection>, PSError>
     
 
     /// The singleton instance of ``PexelsSwift``
@@ -52,7 +52,7 @@ public class PexelsSwift {
 
     // MARK: Collections
 
-    /// Get a list of ``PSCollectionCategory``
+    /// Get a list of ``PSCollection``
     /// - Parameters:
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`

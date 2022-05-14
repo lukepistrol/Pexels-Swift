@@ -1,5 +1,5 @@
 //
-//  PSCollectionCategory.swift
+//  PSCollection.swift
 //  
 //
 //  Created by Lukas Pistrol on 12.05.22.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-/// A structure representing a Collection Category and its metadata.
-public struct PSCollectionCategory: Identifiable, Codable, Equatable {
+/// A structure representing a Collection and its metadata.
+public struct PSCollection: Identifiable, Codable, Equatable {
 
     enum CodingKeys: String, CodingKey {
         case id, title, description

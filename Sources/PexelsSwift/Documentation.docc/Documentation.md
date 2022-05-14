@@ -12,7 +12,7 @@ This Swift Package is a wrapper for [Pexels API](https://www.pexels.com/api) to 
 
 ```swift
 dependencies: [
-.package(url: "https://github.com/lukepistrol/Pexels-Swift.git", from: "0.1.0")
+    .package(url: "https://github.com/lukepistrol/Pexels-Swift.git", from: "0.1.0")
 ],
 ```
 
@@ -48,4 +48,4 @@ case .success(let photos):
 
 - ``PexelsSwift/PSPhoto``
 - ``PexelsSwift/PSVideo``
-- ``PexelsSwift/PSCollectionCategory``
+- ``PexelsSwift/PSCollection``
