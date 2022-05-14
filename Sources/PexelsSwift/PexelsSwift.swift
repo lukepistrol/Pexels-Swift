@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 /// A singleton class for making API calls.
 public class PexelsSwift {
@@ -65,24 +64,22 @@ public class PexelsSwift {
         var req = URLRequest(url: URL(string: "https://api.pexels.com/v1/collections/featured?page=\(page)&per_page=\(results)")!)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
-        return await withCheckedContinuation { continuation in
-            cancelable = URLSession.shared.dataTaskPublisher(for: req)
-                .subscribe(on: Self.sessionProcessingQueue)
-                .map({ return $0.data })
-                .decode(type: CollectionResults.self, decoder: JSONDecoder())
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { subCompletion in
-                    switch subCompletion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        continuation.resume(
-                            returning: .failure(.generic(error.localizedDescription))
-                        )
-                    }
-                }, receiveValue: { (wrapper) in
-                    continuation.resume(returning: .success(wrapper.collections))
-                })
+        do {
+            let (data, response) = try await URLSession.shared.data(for: req)
+
+            guard let response = response as? HTTPURLResponse else {
+                return .failure(.noResponse)
+            }
+
+            guard (200...299).contains(response.statusCode) else {
+                return .failure(.httpResponse(response.statusCode))
+            }
+
+            let wrapper = try JSONDecoder().decode(CollectionResults.self, from: data)
+            return .success(wrapper.collections)
+
+        } catch {
+            return .failure(.generic(error.localizedDescription))
         }
     }
 
@@ -99,22 +96,21 @@ public class PexelsSwift {
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
-        return await withCheckedContinuation { continuation in
-            cancelable = URLSession.shared.dataTaskPublisher(for: req)
-                .subscribe(on: Self.sessionProcessingQueue)
-                .map({ $0.data })
-                .decode(type: PSPhoto.self, decoder: JSONDecoder())
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        continuation.resume(returning: .failure(.generic(error.localizedDescription)))
-                    }
-                }, receiveValue: { photo in
-                    continuation.resume(returning: .success(photo))
-                })
+        do {
+            let (data, response) = try await URLSession.shared.data(for: req)
+
+            guard let response = response as? HTTPURLResponse else {
+                return .failure(.noResponse)
+            }
+
+            guard (200...299).contains(response.statusCode) else {
+                return .failure(.httpResponse(response.statusCode))
+            }
+
+            let photo = try JSONDecoder().decode(PSPhoto.self, from: data)
+            return .success(photo)
+        } catch {
+            return .failure(.generic(error.localizedDescription))
         }
     }
 
@@ -204,22 +200,22 @@ public class PexelsSwift {
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
-        return await withCheckedContinuation { continuation in
-            cancelable = URLSession.shared.dataTaskPublisher(for: req)
-                .subscribe(on: Self.sessionProcessingQueue)
-                .map({ $0.data })
-                .decode(type: PSVideo.self, decoder: JSONDecoder())
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        continuation.resume(returning: .failure(.generic(error.localizedDescription)))
-                    }
-                }, receiveValue: { video in
-                    continuation.resume(returning: .success(video))
-                })
+        do {
+            let (data, response) = try await URLSession.shared.data(for: req)
+
+            guard let response = response as? HTTPURLResponse else {
+                return .failure(.noResponse)
+            }
+
+            guard (200...299).contains(response.statusCode) else {
+                return .failure(.httpResponse(response.statusCode))
+            }
+
+            let video = try JSONDecoder().decode(PSVideo.self, from: data)
+            return .success(video)
+
+        } catch {
+            return .failure(.generic(error.localizedDescription))
         }
     }
 
@@ -315,10 +311,6 @@ public class PexelsSwift {
 
     // MARK: - Private Methods
 
-    private var cancelable: AnyCancellable?
-
-    private static let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
-
     /// Fetch ``PSPhoto`` from [`URL`](https://developer.apple.com/documentation/foundation/url)
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``PhotosResult``
@@ -326,29 +318,28 @@ public class PexelsSwift {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: req)
 
-        return await withCheckedContinuation { continuation in
-            cancelable = URLSession.shared.dataTaskPublisher(for: req)
-                .subscribe(on: Self.sessionProcessingQueue)
-                .map({ return $0.data })
-                .decode(type: ContentResults<PSPhoto>.self, decoder: JSONDecoder())
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        continuation.resume(returning: .failure(.generic(error.localizedDescription)))
-                    }
-                }, receiveValue: { wrapper in
-                    if let photos = wrapper.photos {
-                        continuation.resume(returning: .success(photos))
-                    } else if let media = wrapper.media {
-                        continuation.resume(returning: .success(media))
-                    } else {
-                        continuation.resume(returning: .failure(.noContent))
-                    }
-                })
+            guard let response = response as? HTTPURLResponse else {
+                return .failure(.noResponse)
+            }
+
+            guard (200...299).contains(response.statusCode) else {
+                return .failure(.httpResponse(response.statusCode))
+            }
+
+            let wrapper = try JSONDecoder().decode(ContentResults<PSPhoto>.self, from: data)
+            if let photos = wrapper.photos {
+                return .success(photos)
+            } else if let media = wrapper.media {
+                return .success(media)
+            } else {
+                return .failure(.noContent)
+            }
+
+        } catch {
+            return .failure(.generic(error.localizedDescription))
         }
     }
 
@@ -359,29 +350,28 @@ public class PexelsSwift {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: req)
 
-        return await withCheckedContinuation { continuation in
-            cancelable = URLSession.shared.dataTaskPublisher(for: req)
-                .subscribe(on: Self.sessionProcessingQueue)
-                .map({ $0.data })
-                .decode(type: ContentResults<PSVideo>.self, decoder: JSONDecoder())
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        continuation.resume(returning: .failure(.generic(error.localizedDescription)))
-                    }
-                }, receiveValue: { wrapper in
-                    if let videos = wrapper.videos {
-                        continuation.resume(returning: .success(videos))
-                    } else if let media = wrapper.media {
-                        continuation.resume(returning: .success(media))
-                    } else {
-                        continuation.resume(returning: .failure(.noContent))
-                    }
-                })
+            guard let response = response as? HTTPURLResponse else {
+                return .failure(.noResponse)
+            }
+
+            guard (200...299).contains(response.statusCode) else {
+                return .failure(.httpResponse(response.statusCode))
+            }
+
+            let wrapper = try JSONDecoder().decode(ContentResults<PSVideo>.self, from: data)
+            if let videos = wrapper.videos {
+                return .success(videos)
+            } else if let media = wrapper.media {
+                return .success(media)
+            } else {
+                return .failure(.noContent)
+            }
+
+        } catch {
+            return .failure(.generic(error.localizedDescription))
         }
     }
 }

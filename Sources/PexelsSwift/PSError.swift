@@ -13,6 +13,8 @@ public enum PSError: Error, Equatable {
     case noAPIKey
     case noContent
     case badURL
+    case noResponse
+    case httpResponse(Int)
 
     var localizedDescription: String {
         switch self {
@@ -24,6 +26,10 @@ public enum PSError: Error, Equatable {
             return "No content was found"
         case .badURL:
             return "Not a valid URL"
+        case .noResponse:
+            return "No response from server"
+        case .httpResponse(let code):
+            return "HTTP Error. Status code: \(code)"
         }
     }
 }
