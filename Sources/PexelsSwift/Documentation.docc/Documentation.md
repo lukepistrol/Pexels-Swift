@@ -38,6 +38,10 @@ case .success(let photos):
 }
 ```
 
+## Demo Project
+
+I've built a simple iOS app - [PexelsBrowser](https://github.com/lukepistrol/PexelsBrowser) - using this library and SwiftUI.
+
 ## Topics
 
 ### Classes
