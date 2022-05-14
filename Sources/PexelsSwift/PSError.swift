@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  PSError.swift
 //  
 //
 //  Created by Lukas Pistrol on 14.05.22.

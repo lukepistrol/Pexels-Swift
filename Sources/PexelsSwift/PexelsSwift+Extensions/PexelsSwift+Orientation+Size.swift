@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  PexelsSwift+Orientation+Size.swift
 //  
 //
 //  Created by Lukas Pistrol on 13.05.22.

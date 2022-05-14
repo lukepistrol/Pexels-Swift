@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  PSPhoto.swift
 //  
 //
 //  Created by Lukas Pistrol on 12.05.22.

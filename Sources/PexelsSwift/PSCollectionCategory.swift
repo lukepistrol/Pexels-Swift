@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  PSCollectionCategory.swift
 //  
 //
 //  Created by Lukas Pistrol on 12.05.22.
