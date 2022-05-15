@@ -26,6 +26,9 @@ public class PexelsSwift {
 
     /// Result type for an array of ``PSCollection``.
     public typealias CollectionResult = Result<Array<PSCollection>, PSError>
+
+    /// Result type for a type of **T**.
+    private typealias PSResult<T> = Result<T, PSError>
     
 
     /// The singleton instance of ``PexelsSwift``
@@ -39,14 +42,19 @@ public class PexelsSwift {
     /// Set through ``setAPIKey(_:)``.
     private var apiKey: String = ""
 
+    /// An instance of ``PSLogger``
+    private var logger: PSLogger = .init()
+
     // MARK: - Public Methods
 
     /// Set the API key to make API Queries.
     ///
     /// An API Key can be obtained from [here](https://www.pexels.com/api/)
-    /// - Parameter key: The API Key
-    public func setAPIKey(_ key: String) {
-        self.apiKey = key
+    /// - Parameter apiKey: The API Key
+    /// - Parameter logLevel: The `logLevel` to use. Defaults to ``PSLogLevel/info``.
+    public func setup(apiKey: String, logLevel: PSLogLevel = .info) {
+        self.apiKey = apiKey
+        self.logger.setLogLevel(logLevel)
     }
 
     // MARK: Collections
@@ -61,25 +69,12 @@ public class PexelsSwift {
         count results: Int = 10
     ) async -> CollectionResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        var req = URLRequest(url: URL(string: "https://api.pexels.com/v1/collections/featured?page=\(page)&per_page=\(results)")!)
-        req.setValue(apiKey, forHTTPHeaderField: apiHeader)
+        let url = URL(string: "https://api.pexels.com/v1/collections/featured?page=\(page)&per_page=\(results)")!
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: req)
-
-            guard let response = response as? HTTPURLResponse else {
-                return .failure(.noResponse)
-            }
-
-            guard (200...299).contains(response.statusCode) else {
-                return .failure(.httpResponse(response.statusCode))
-            }
-
-            let wrapper = try JSONDecoder().decode(CollectionResults.self, from: data)
-            return .success(wrapper.collections)
-
-        } catch {
-            return .failure(.generic(error.localizedDescription))
+        let result: Result<CollectionResults, PSError> = await fetch(url: url)
+        switch result {
+        case .failure(let error): return .failure(error)
+        case .success(let wrapper): return .success(wrapper.collections)
         }
     }
 
@@ -93,24 +88,11 @@ public class PexelsSwift {
     public func getPhoto(by id: Int) async -> PhotoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         let url = URL(string: API.photoByID + "/\(id)")!
-        var req = URLRequest(url: url)
-        req.setValue(apiKey, forHTTPHeaderField: apiHeader)
 
-        do {
-            let (data, response) = try await URLSession.shared.data(for: req)
-
-            guard let response = response as? HTTPURLResponse else {
-                return .failure(.noResponse)
-            }
-
-            guard (200...299).contains(response.statusCode) else {
-                return .failure(.httpResponse(response.statusCode))
-            }
-
-            let photo = try JSONDecoder().decode(PSPhoto.self, from: data)
-            return .success(photo)
-        } catch {
-            return .failure(.generic(error.localizedDescription))
+        let result: Result<PSPhoto, PSError> = await fetch(url: url)
+        switch result {
+        case .failure(let error): return .failure(error)
+        case .success(let photo): return .success(photo)
         }
     }
 
@@ -197,25 +179,10 @@ public class PexelsSwift {
     public func getVideo(by id: Int) async -> VideoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         let url = URL(string: API.videoByID + "/\(id)")!
-        var req = URLRequest(url: url)
-        req.setValue(apiKey, forHTTPHeaderField: apiHeader)
-
-        do {
-            let (data, response) = try await URLSession.shared.data(for: req)
-
-            guard let response = response as? HTTPURLResponse else {
-                return .failure(.noResponse)
-            }
-
-            guard (200...299).contains(response.statusCode) else {
-                return .failure(.httpResponse(response.statusCode))
-            }
-
-            let video = try JSONDecoder().decode(PSVideo.self, from: data)
-            return .success(video)
-
-        } catch {
-            return .failure(.generic(error.localizedDescription))
+        let result: Result<PSVideo, PSError> = await fetch(url: url)
+        switch result {
+        case .failure(let error): return .failure(error)
+        case .success(let video): return .success(video)
         }
     }
 
@@ -315,21 +282,10 @@ public class PexelsSwift {
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``PhotosResult``
     private func fetchPhotos(url: URL) async -> PhotosResult {
-        guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        var req = URLRequest(url: url)
-        req.setValue(apiKey, forHTTPHeaderField: apiHeader)
-        do {
-            let (data, response) = try await URLSession.shared.data(for: req)
-
-            guard let response = response as? HTTPURLResponse else {
-                return .failure(.noResponse)
-            }
-
-            guard (200...299).contains(response.statusCode) else {
-                return .failure(.httpResponse(response.statusCode))
-            }
-
-            let wrapper = try JSONDecoder().decode(ContentResults<PSPhoto>.self, from: data)
+        let result: Result<ContentResults<PSPhoto>, PSError> = await fetch(url: url)
+        switch result {
+        case .failure(let error): return .failure(error)
+        case .success(let wrapper):
             if let photos = wrapper.photos {
                 return .success(photos)
             } else if let media = wrapper.media {
@@ -337,9 +293,6 @@ public class PexelsSwift {
             } else {
                 return .failure(.noContent)
             }
-
-        } catch {
-            return .failure(.generic(error.localizedDescription))
         }
     }
 
@@ -347,21 +300,10 @@ public class PexelsSwift {
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``VideosResult``
     private func fetchVideos(url: URL) async -> VideosResult {
-        guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        var req = URLRequest(url: url)
-        req.setValue(apiKey, forHTTPHeaderField: apiHeader)
-        do {
-            let (data, response) = try await URLSession.shared.data(for: req)
-
-            guard let response = response as? HTTPURLResponse else {
-                return .failure(.noResponse)
-            }
-
-            guard (200...299).contains(response.statusCode) else {
-                return .failure(.httpResponse(response.statusCode))
-            }
-
-            let wrapper = try JSONDecoder().decode(ContentResults<PSVideo>.self, from: data)
+        let result: Result<ContentResults<PSVideo>, PSError> = await fetch(url: url)
+        switch result {
+        case .failure(let error): return .failure(error)
+        case .success(let wrapper):
             if let videos = wrapper.videos {
                 return .success(videos)
             } else if let media = wrapper.media {
@@ -369,8 +311,41 @@ public class PexelsSwift {
             } else {
                 return .failure(.noContent)
             }
+        }
+    }
+
+    /// Fetch **T** from [`URL`](https://developer.apple.com/documentation/foundation/url)
+    /// - Parameter url: The URL to fetch from.
+    /// - Returns: A result type of ``PSResult``.
+    private func fetch<T: Codable>(url: URL) async -> PSResult<T> {
+        guard !apiKey.isEmpty else {
+            logger.logError(.noAPIKey)
+            return .failure(.noAPIKey)
+        }
+        var req = URLRequest(url: url)
+        req.setValue(apiKey, forHTTPHeaderField: apiHeader)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: req)
+
+            guard let response = response as? HTTPURLResponse else {
+                logger.logError(.noResponse)
+                return .failure(.noResponse)
+            }
+
+            logger.logResponse(response)
+
+            guard (200...299).contains(response.statusCode) else {
+                logger.logError(.httpResponse(response.statusCode))
+                return .failure(.httpResponse(response.statusCode))
+            }
+
+            logger.logData(data)
+
+            let result = try JSONDecoder().decode(T.self, from: data)
+            return .success(result)
 
         } catch {
+            logger.logError(.generic(error.localizedDescription))
             return .failure(.generic(error.localizedDescription))
         }
     }

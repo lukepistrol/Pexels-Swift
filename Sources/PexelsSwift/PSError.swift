@@ -16,12 +16,13 @@ public enum PSError: Error, Equatable {
     case noResponse
     case httpResponse(Int)
 
-    var localizedDescription: String {
+    /// Retrieve the description for this error.
+    public var description: String {
         switch self {
         case .generic(let error):
             return "Generic Error: \(error)"
         case .noAPIKey:
-            return "No API key was set. Call `setAPIKey(_:)` before making a request"
+            return "No API key was set. Call `setup(apiKey:logLevel:)` before making a request"
         case .noContent:
             return "No content was found"
         case .badURL:

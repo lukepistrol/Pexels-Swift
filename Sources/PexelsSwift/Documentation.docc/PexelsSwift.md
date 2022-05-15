@@ -8,7 +8,7 @@ Use this class for making API calls. It is accessible through a singleton instan
 let pexels = PexelsSwift.shared
 ```
 
-Make sure to also set your API key using ``setAPIKey(_:)``.
+Make sure to also set your API key using ``setup(apiKey:logLevel:)``.
 
 ```swift
 pexels.setAPIKey("YOUR_SECRET_API_KEY")
@@ -22,7 +22,7 @@ pexels.setAPIKey("YOUR_SECRET_API_KEY")
 
 ### Setup
 
-- ``setAPIKey(_:)``
+- ``setup(apiKey:logLevel:)``
 
 ### Categories
 

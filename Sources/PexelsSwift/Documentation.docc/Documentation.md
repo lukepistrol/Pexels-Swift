@@ -25,14 +25,14 @@ import PexelsSwift
 let pexels = PexelsSwift.shared
 
 // set your API key
-pexels.setAPIKey("YOUR_API_KEY")
+pexels.setup(apiKey: "YOUR_API_KEY", logLevel: .debug)
 
 // fetch images metadata
 let result = await pexels.getCuratedPhotos()
 
 switch result {
 case .failure(let error):
-    // handle error
+    print(error.description)
 case .success(let photos):
     // access photos
 }
@@ -48,8 +48,17 @@ I've built a simple iOS app - [PexelsBrowser](https://github.com/lukepistrol/Pex
 
 - ``PexelsSwift/PexelsSwift``
 
-### Structures
+### Resources
 
 - ``PexelsSwift/PSPhoto``
 - ``PexelsSwift/PSVideo``
 - ``PexelsSwift/PSCollection``
+
+### Logger
+
+- ``PexelsSwift/PSLogger``
+- ``PexelsSwift/PSLogLevel``
+
+### Errors
+
+- ``PexelsSwift/PSError``
