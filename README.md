@@ -1,3 +1,12 @@
+<p>
+  <img src="https://img.shields.io/badge/Swift-5.6-ff69b4.svg" />
+  <img src="https://img.shields.io/badge/iOS-15+-brightgreen.svg" />
+  <img src="https://img.shields.io/badge/macOS-12+-brightgreen.svg" />
+  <a href="https://twitter.com/lukeeep_">
+    <img src="https://img.shields.io/badge/Contact-@lukeeep_-lightgrey.svg?style=flat" alt="Twitter: @lukeeep_" />
+  </a>
+</p>
+
 # Pexels-Swift
 
 A Swift wrapper for the [Pexels.com API](https://www.pexels.com/api).
