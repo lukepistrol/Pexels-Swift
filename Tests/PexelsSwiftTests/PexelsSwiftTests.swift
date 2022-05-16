@@ -26,6 +26,8 @@ final class Pexels_SwiftTests: XCTestCase {
         self.pexels = nil
     }
 
+    // MARK: - Async/Await
+
     func testGetPhotoByID() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey)
@@ -155,5 +157,166 @@ final class Pexels_SwiftTests: XCTestCase {
         case .success(let videos):
             XCTAssertFalse(videos.isEmpty)
         }
+    }
+
+    // MARK: Completion Handlers
+
+    func testGetPhotoByIDClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.getPhoto(by: 2014422) { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let photo):
+                XCTAssertEqual(photo.id, 2014422)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testCuratedPhotosClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.getCuratedPhotos() { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let photos):
+                XCTAssertFalse(photos.isEmpty)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testSearchPhotosClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.searchPhotos("Ocean") { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let photos):
+                XCTAssertFalse(photos.isEmpty)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testGetPhotosFromCollectionClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.getPhotos(for: "hoxyyjd") { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let photos):
+                XCTAssertFalse(photos.isEmpty)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testCollectionsClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.getCollections { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let categories):
+                XCTAssertFalse(categories.isEmpty)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testNoAPIKeyClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.getCuratedPhotos() { result in
+            switch result {
+            case .failure(let error):
+                XCTAssertEqual(error, .noAPIKey)
+            case .success(_):
+                XCTFail("Should not return a value")
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testGetVideoByIDClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.getVideo(by: 6466763) { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let video):
+                XCTAssertEqual(video.id, 6466763)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testGetPopularVideosClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.getPopularVideos() { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let videos):
+                XCTAssertFalse(videos.isEmpty)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testSearchVideosClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.searchVideos("Ocean") { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let videos):
+                XCTAssertFalse(videos.isEmpty)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+    }
+
+    func testGetVideosFromCollectionClosure() throws {
+        let expectation = expectation(description: "closure")
+        guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: apiKey)
+        pexels.getVideos(for: "8xntbhr") { result in
+            switch result {
+            case .failure(let error):
+                XCTFail(error.description)
+            case .success(let videos):
+                XCTAssertFalse(videos.isEmpty)
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10)
     }
 }

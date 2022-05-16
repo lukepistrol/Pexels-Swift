@@ -57,7 +57,7 @@ public class PexelsSwift {
         self.logger.setLogLevel(logLevel)
     }
 
-    // MARK: Collections
+    // MARK: Get Collections
 
     /// Get a list of ``PSCollection``
     /// - Parameters:
@@ -78,7 +78,22 @@ public class PexelsSwift {
         }
     }
 
-    // MARK: Photos
+    /// Get a list of ``PSCollection``
+    /// - Parameters:
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - completion: A result type of ``CollectionResult``
+    public func getCollections(
+        page: Int = 1,
+        count results: Int = 10,
+        completion: @escaping (CollectionResult) -> Void
+    ) {
+        Task {
+            completion(await getCollections(page: page, count: results))
+        }
+    }
+
+    // MARK: Get Photo
 
     /// Gets a single ``PSPhoto`` based on a given ID
     ///
@@ -95,6 +110,20 @@ public class PexelsSwift {
         case .success(let photo): return .success(photo)
         }
     }
+
+    /// Gets a single ``PSPhoto`` based on a given ID
+    ///
+    /// If the request fails this will return `nil`
+    /// - Parameters:
+    ///   - id: The ID of the Photo
+    ///   - completion: A result type of ``PhotoResult``
+    public func getPhoto(by id: Int, completion: @escaping (PhotoResult) -> Void) {
+        Task {
+            completion(await getPhoto(by: id))
+        }
+    }
+
+    // MARK: Get Curated Photos
 
     /// Get a list of curated ``PSPhoto``
     /// - Parameters:
@@ -114,11 +143,31 @@ public class PexelsSwift {
         return await fetchPhotos(url: url)
     }
 
+    /// Get a list of curated ``PSPhoto``
+    /// - Parameters:
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - completion: A result type of ``PhotosResult``
+    public func getCuratedPhotos(
+        page: Int = 1,
+        count results: Int = 10,
+        completion: @escaping (PhotosResult) -> Void
+    ) {
+        Task {
+            completion(await getCuratedPhotos(page: page, count: results))
+        }
+    }
+
+    // MARK: Search Photos
+
     /// Get a list of ``PSPhoto`` based on a search query
     /// - Parameters:
     ///   - query: The search query.
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - orientation: The orientation. Defaults to `nil`
+    ///   - size: The minimum size. Defaults to `nil`
+    ///   - color: The color. Defaults to `nil`
     /// - Returns: A result type of ``PhotosResult``
     public func searchPhotos(
         _ query: String,
@@ -148,6 +197,33 @@ public class PexelsSwift {
         return await fetchPhotos(url: url)
     }
 
+    /// Get a list of ``PSPhoto`` based on a search query
+    /// - Parameters:
+    ///   - query: The search query.
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - orientation: The orientation. Defaults to `nil`
+    ///   - size: The minimum size. Defaults to `nil`
+    ///   - color: The color. Defaults to `nil`
+    ///   - completion: A result type of ``PhotosResult``
+    public func searchPhotos(
+        _ query: String,
+        orientation: PSOrientation? = nil,
+        size: PSSize? = nil,
+        color: PSColor? = nil,
+        page: Int = 1,
+        count results: Int = 10,
+        completion: @escaping (PhotosResult) -> Void
+    ) {
+        Task {
+            completion(await searchPhotos(
+                query, orientation: orientation, size: size, color: color, page: page, count: results
+            ))
+        }
+    }
+
+    // MARK: Get Photos for Category ID
+
     /// Get a list of ``PSPhoto`` based on a gived category ID
     /// - Parameters:
     ///   - categoryID: The category ID
@@ -169,7 +245,24 @@ public class PexelsSwift {
         return await fetchPhotos(url: url)
     }
 
-    // MARK: Videos
+    /// Get a list of ``PSPhoto`` based on a gived category ID
+    /// - Parameters:
+    ///   - categoryID: The category ID
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - completion: A result type of ``PhotosResult``
+    public func getPhotos(
+        for categoryID: String,
+        page: Int = 1,
+        count results: Int = 10,
+        completion: @escaping (PhotosResult) -> Void
+    ) {
+        Task {
+            completion(await getPhotos(for: categoryID, page: page, count: results))
+        }
+    }
+
+    // MARK: Get Video
 
     /// Gets a single ``PSVideo`` based on a given ID
     ///
@@ -185,6 +278,20 @@ public class PexelsSwift {
         case .success(let video): return .success(video)
         }
     }
+
+    /// Gets a single ``PSVideo`` based on a given ID
+    ///
+    /// If the request fails this will return `nil`
+    /// - Parameters:
+    ///   - id: The ID of the Video
+    ///   - completion: A result type of ``VideoResult``
+    public func getVideo(by id: Int, completion: @escaping (VideoResult) -> Void) {
+        Task {
+            completion(await getVideo(by: id))
+        }
+    }
+
+    // MARK: Get Popular Videos
 
     /// Get a list of popular videos
     /// - Parameters:
@@ -224,6 +331,38 @@ public class PexelsSwift {
         return await fetchVideos(url: url)
     }
 
+    /// Get a list of popular videos
+    /// - Parameters:
+    ///   - minimumWidth: The minimum width in pixels of the returned videos.
+    ///   - minimumHeight: The minimum height in pixels of the returned videos.
+    ///   - minimumDuration: The minimum duration in seconds of the returned videos.
+    ///   - maximumDuration: The maximum duration in seconds of the returned videos.
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - completion: A result type of ``VideosResult``
+    public func getPopularVideos(
+        minimumWidth: Int? = nil,
+        minimumHeight: Int? = nil,
+        minimumDuration: Int? = nil,
+        maximumDuration: Int? = nil,
+        page: Int = 1,
+        count results: Int = 10,
+        completion: @escaping (VideosResult) -> Void
+    ) {
+        Task {
+            completion(await getPopularVideos(
+                minimumWidth: minimumWidth,
+                minimumHeight: minimumHeight,
+                minimumDuration: minimumDuration,
+                maximumDuration: maximumDuration,
+                page: page,
+                count: results
+            ))
+        }
+    }
+
+    // MARK: Search Videos
+
     /// Get a list of ``PSVideo`` based on a search query
     /// - Parameters:
     ///   - query: The search query.
@@ -255,6 +394,35 @@ public class PexelsSwift {
         return await fetchVideos(url: url)
     }
 
+    /// Get a list of ``PSVideo`` based on a search query
+    /// - Parameters:
+    ///   - query: The search query.
+    ///   - orientation: Desired video orientation.
+    ///   - size: Minimum video size.
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - completion: A result type of ``VideosResult``
+    public func searchVideos(
+        _ query: String,
+        orientation: PSOrientation? = nil,
+        size: PSSize? = nil,
+        page: Int = 1,
+        results: Int = 10,
+        completion: @escaping (VideosResult) -> Void
+    ) {
+        Task {
+            completion(await searchVideos(
+                query,
+                orientation: orientation,
+                size: size,
+                page: page,
+                results: results
+            ))
+        }
+    }
+
+    // MARK: Get Videos for Category ID
+
     /// Get a list of ``PSVideo`` based on a gived category ID
     /// - Parameters:
     ///   - categoryID: The category ID
@@ -276,7 +444,26 @@ public class PexelsSwift {
         return await fetchVideos(url: url)
     }
 
+    /// Get a list of ``PSVideo`` based on a gived category ID
+    /// - Parameters:
+    ///   - categoryID: The category ID
+    ///   - page: The page/offset to get. Defaults to `1`
+    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - completion: A result type of ``VideosResult``
+    public func getVideos(
+        for categoryID: String,
+        page: Int = 1,
+        count results: Int = 10,
+        completion: @escaping (VideosResult) -> Void
+    ) {
+        Task {
+            completion(await getVideos(for: categoryID, page: page, count: results))
+        }
+    }
+
     // MARK: - Private Methods
+
+    // MARK: Fetch Photos
 
     /// Fetch ``PSPhoto`` from [`URL`](https://developer.apple.com/documentation/foundation/url)
     /// - Parameter url: The URL to fetch from.
@@ -296,6 +483,8 @@ public class PexelsSwift {
         }
     }
 
+    // MARK: Fetch Videos
+
     /// Fetch ``PSVideo`` from [`URL`](https://developer.apple.com/documentation/foundation/url)
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``VideosResult``
@@ -313,6 +502,8 @@ public class PexelsSwift {
             }
         }
     }
+
+    // MARK: Fetch Generic Type
 
     /// Fetch **T** from [`URL`](https://developer.apple.com/documentation/foundation/url)
     /// - Parameter url: The URL to fetch from.
