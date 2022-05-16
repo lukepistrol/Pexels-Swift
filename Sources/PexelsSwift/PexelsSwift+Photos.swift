@@ -84,12 +84,14 @@ public extension PexelsSwift {
     ///   - orientation: The orientation. Defaults to `nil`
     ///   - size: The minimum size. Defaults to `nil`
     ///   - color: The color. Defaults to `nil`
+    ///   - locale: The Locale. Defaults to `nil`
     /// - Returns: A result type of ``PhotosResult``
     func searchPhotos(
         _ query: String,
         orientation: PSOrientation? = nil,
         size: PSSize? = nil,
         color: PSColor? = nil,
+        locale: PSLocale? = nil,
         page: Int = 1,
         count results: Int = 10
     ) async -> PhotosResult {
@@ -107,6 +109,9 @@ public extension PexelsSwift {
         if let color = color {
             param.append(.init(name: "color", value: color.rawValue))
         }
+        if let locale = locale {
+            param.append(.init(name: "locale", value: locale.rawValue))
+        }
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }
@@ -121,19 +126,21 @@ public extension PexelsSwift {
     ///   - orientation: The orientation. Defaults to `nil`
     ///   - size: The minimum size. Defaults to `nil`
     ///   - color: The color. Defaults to `nil`
+    ///   - locale: The Locale. Defaults to `nil`
     ///   - completion: A result type of ``PhotosResult``
     func searchPhotos(
         _ query: String,
         orientation: PSOrientation? = nil,
         size: PSSize? = nil,
         color: PSColor? = nil,
+        locale: PSLocale? = nil,
         page: Int = 1,
         count results: Int = 10,
         completion: @escaping (PhotosResult) -> Void
     ) {
         Task {
             completion(await searchPhotos(
-                query, orientation: orientation, size: size, color: color, page: page, count: results
+                query, orientation: orientation, size: size, color: color, locale: locale, page: page, count: results
             ))
         }
     }

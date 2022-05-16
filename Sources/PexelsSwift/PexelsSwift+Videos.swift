@@ -113,8 +113,9 @@ public extension PexelsSwift {
     /// Get a list of ``PSVideo`` based on a search query
     /// - Parameters:
     ///   - query: The search query.
-    ///   - orientation: Desired video orientation.
-    ///   - size: Minimum video size.
+    ///   - orientation: Desired video orientation. Defaults to `nil`
+    ///   - size: Minimum video size. Defaults to `nil`
+    ///   - locale: The Locale. Defaults to `nil`
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
     /// - Returns: A result type of ``VideosResult``
@@ -122,6 +123,7 @@ public extension PexelsSwift {
         _ query: String,
         orientation: PSOrientation? = nil,
         size: PSSize? = nil,
+        locale: PSLocale? = nil,
         page: Int = 1,
         results: Int = 10
     ) async -> VideosResult {
@@ -135,6 +137,9 @@ public extension PexelsSwift {
         if let size = size {
             param.append(.init(name: "size", value: size.rawValue))
         }
+        if let locale = locale {
+            param.append(.init(name: "locale", value: locale.rawValue))
+        }
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }
@@ -144,8 +149,9 @@ public extension PexelsSwift {
     /// Get a list of ``PSVideo`` based on a search query
     /// - Parameters:
     ///   - query: The search query.
-    ///   - orientation: Desired video orientation.
-    ///   - size: Minimum video size.
+    ///   - orientation: Desired video orientation. Defaults to `nil`
+    ///   - size: Minimum video size. Defaults to `nil`
+    ///   - locale: The Locale. Defaults to `nil`
     ///   - page: The page/offset to get. Defaults to `1`
     ///   - results: The number of results a page should contain. Defaults to `10`
     ///   - completion: A result type of ``VideosResult``
@@ -153,6 +159,7 @@ public extension PexelsSwift {
         _ query: String,
         orientation: PSOrientation? = nil,
         size: PSSize? = nil,
+        locale: PSLocale? = nil,
         page: Int = 1,
         results: Int = 10,
         completion: @escaping (VideosResult) -> Void
@@ -162,6 +169,7 @@ public extension PexelsSwift {
                 query,
                 orientation: orientation,
                 size: size,
+                locale: locale,
                 page: page,
                 results: results
             ))
