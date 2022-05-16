@@ -11,7 +11,7 @@
 
 [Pexels.com API](https://www.pexels.com/api) client library for the Swift programming language.
 
-![Banner](https://repository-images.githubusercontent.com/491679721/618b4b98-433a-4acd-9ad2-c1bcbca32fd4)
+![Banner](https://github.com/lukepistrol/Pexels-Swift/blob/main/Sources/PexelsSwift/Documentation.docc/Resources/Banner.png)
 
 ## Overview
 
