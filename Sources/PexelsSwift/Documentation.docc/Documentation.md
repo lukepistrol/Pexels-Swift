@@ -27,7 +27,7 @@ let pexels = PexelsSwift.shared
 // set your API key
 pexels.setup(apiKey: "YOUR_API_KEY", logLevel: .debug)
 
-// fetch images metadata
+// fetch images metadata using async/await
 let result = await pexels.getCuratedPhotos()
 
 switch result {
@@ -35,6 +35,16 @@ case .failure(let error):
     print(error.description)
 case .success(let photos):
     // access photos
+}
+
+// fetch images metadata using completion handlers
+pexels.getCuratedPhotos() { result in
+    switch result {
+    case .failure(let error):
+        print(error.description)
+    case .success(let photos):
+        // access photos
+    }
 }
 ```
 
