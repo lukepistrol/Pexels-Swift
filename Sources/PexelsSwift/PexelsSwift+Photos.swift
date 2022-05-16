@@ -20,7 +20,7 @@ public extension PexelsSwift {
     /// - Returns: A result type of ``PhotoResult``
     func getPhoto(by id: Int) async -> PhotoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        guard let url = URL(string: API.photoByID)?.appendingPathComponent(id.string)
+        guard let url = URL(string: API.photoByID(id))
         else { return .failure(.badURL) }
 
         let result: Result<PSPhoto, PSError> = await fetch(url: url)

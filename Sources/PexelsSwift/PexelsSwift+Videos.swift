@@ -20,7 +20,7 @@ public extension PexelsSwift {
     /// - Returns: A result type of ``VideoResult``
     func getVideo(by id: Int) async -> VideoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        guard let url = URL(string: API.videoByID)?.appendingPathComponent(id.string)
+        guard let url = URL(string: API.videoByID(id))
         else { return .failure(.badURL) }
         let result: Result<PSVideo, PSError> = await fetch(url: url)
         switch result {
