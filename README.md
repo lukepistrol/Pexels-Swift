@@ -9,7 +9,7 @@
 
 # Pexels-Swift
 
-A Swift wrapper for the [Pexels.com API](https://www.pexels.com/api).
+[Pexels.com API](https://www.pexels.com/api) client library for the Swift programming language.
 
 ![Banner](https://repository-images.githubusercontent.com/491679721/618b4b98-433a-4acd-9ad2-c1bcbca32fd4)
 
