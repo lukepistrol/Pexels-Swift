@@ -1,8 +1,10 @@
 # ``PexelsSwift``
 
-A Swift wrapper for the Pexels.com API.
+Pexels.com API client library for the Swift programming language.
 
 ## Overview
+
+![Banner](Banner.png)
 
 This Swift Package is a wrapper for [Pexels API](https://www.pexels.com/api) to get access to the entire photo library of `Pexels` within your Swift app.
 
