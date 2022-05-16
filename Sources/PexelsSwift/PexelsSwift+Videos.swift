@@ -50,7 +50,7 @@ public extension PexelsSwift {
     ///   - minimumDuration: The minimum duration in seconds of the returned videos.
     ///   - maximumDuration: The maximum duration in seconds of the returned videos.
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     /// - Returns: A result type of ``VideosResult``
     func getPopularVideos(
         minimumWidth: Int? = nil,
@@ -58,12 +58,12 @@ public extension PexelsSwift {
         minimumDuration: Int? = nil,
         maximumDuration: Int? = nil,
         page: Int = 1,
-        count results: Int = 10
+        count: Int = 10
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.popularVideos)
         else { return .failure(.badURL) }
         var param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
-                                          .init(name: P.perPage, value: results.string)]
+                                          .init(name: P.perPage, value: count.string)]
         if let minimumWidth = minimumWidth {
             param.append(.init(name: P.minWidth, value: minimumWidth.string))
         }
@@ -89,7 +89,7 @@ public extension PexelsSwift {
     ///   - minimumDuration: The minimum duration in seconds of the returned videos.
     ///   - maximumDuration: The maximum duration in seconds of the returned videos.
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - completion: A result type of ``VideosResult``
     func getPopularVideos(
         minimumWidth: Int? = nil,
@@ -97,7 +97,7 @@ public extension PexelsSwift {
         minimumDuration: Int? = nil,
         maximumDuration: Int? = nil,
         page: Int = 1,
-        count results: Int = 10,
+        count: Int = 10,
         completion: @escaping (VideosResult) -> Void
     ) {
         Task {
@@ -107,7 +107,7 @@ public extension PexelsSwift {
                 minimumDuration: minimumDuration,
                 maximumDuration: maximumDuration,
                 page: page,
-                count: results
+                count: count
             ))
         }
     }
@@ -121,7 +121,7 @@ public extension PexelsSwift {
     ///   - size: Minimum video size. Defaults to `nil`
     ///   - locale: The Locale. Defaults to `nil`
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     /// - Returns: A result type of ``VideosResult``
     func searchVideos(
         _ query: String,
@@ -129,13 +129,13 @@ public extension PexelsSwift {
         size: PSSize? = nil,
         locale: PSLocale? = nil,
         page: Int = 1,
-        results: Int = 10
+        count: Int = 10
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.searchVideos)
         else { return .failure(.badURL) }
         var param: Array<URLQueryItem> = [.init(name: P.query, value: query),
                                           .init(name: P.page, value: page.string),
-                                          .init(name: P.perPage, value: results.string)]
+                                          .init(name: P.perPage, value: count.string)]
         if let orientation = orientation {
             param.append(.init(name: P.orientation, value: orientation.rawValue))
         }
@@ -158,7 +158,7 @@ public extension PexelsSwift {
     ///   - size: Minimum video size. Defaults to `nil`
     ///   - locale: The Locale. Defaults to `nil`
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - completion: A result type of ``VideosResult``
     func searchVideos(
         _ query: String,
@@ -166,7 +166,7 @@ public extension PexelsSwift {
         size: PSSize? = nil,
         locale: PSLocale? = nil,
         page: Int = 1,
-        results: Int = 10,
+        count: Int = 10,
         completion: @escaping (VideosResult) -> Void
     ) {
         Task {
@@ -176,7 +176,7 @@ public extension PexelsSwift {
                 size: size,
                 locale: locale,
                 page: page,
-                results: results
+                count: count
             ))
         }
     }
@@ -187,18 +187,18 @@ public extension PexelsSwift {
     /// - Parameters:
     ///   - categoryID: The category ID
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     /// - Returns: A result type of ``VideosResult``
     func getVideos(
         for categoryID: String,
         page: Int = 1,
-        count results: Int = 10
+        count: Int = 10
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.collections(categoryID))
         else { return .failure(.badURL) }
         let param: Array<URLQueryItem> = [.init(name: P.type, value: "videos"),
                                           .init(name: P.page, value: page.string),
-                                          .init(name: P.perPage, value: results.string)]
+                                          .init(name: P.perPage, value: count.string)]
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }
@@ -209,16 +209,16 @@ public extension PexelsSwift {
     /// - Parameters:
     ///   - categoryID: The category ID
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - completion: A result type of ``VideosResult``
     func getVideos(
         for categoryID: String,
         page: Int = 1,
-        count results: Int = 10,
+        count: Int = 10,
         completion: @escaping (VideosResult) -> Void
     ) {
         Task {
-            completion(await getVideos(for: categoryID, page: page, count: results))
+            completion(await getVideos(for: categoryID, page: page, count: count))
         }
     }
 

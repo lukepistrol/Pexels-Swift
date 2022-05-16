@@ -16,16 +16,16 @@ public extension PexelsSwift {
     /// Get a list of ``PSCollection``
     /// - Parameters:
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     /// - Returns: A result type of ``CollectionResult``
     func getCollections(
         page: Int = 1,
-        count results: Int = 10
+        count: Int = 10
     ) async -> CollectionResult {
         guard var components: URLComponents = .init(string: API.featuredCollections)
         else { return .failure(.badURL) }
         let param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
-                                          .init(name: P.perPage, value: results.string)]
+                                          .init(name: P.perPage, value: count.string)]
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }
@@ -41,15 +41,15 @@ public extension PexelsSwift {
     /// Get a list of ``PSCollection``
     /// - Parameters:
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - completion: A result type of ``CollectionResult``
     func getCollections(
         page: Int = 1,
-        count results: Int = 10,
+        count: Int = 10,
         completion: @escaping (CollectionResult) -> Void
     ) {
         Task {
-            completion(await getCollections(page: page, count: results))
+            completion(await getCollections(page: page, count: count))
         }
     }
 

@@ -47,16 +47,16 @@ public extension PexelsSwift {
     /// Get a list of curated ``PSPhoto``
     /// - Parameters:
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     /// - Returns: A result type of ``PhotosResult``
     func getCuratedPhotos(
         page: Int = 1,
-        count results: Int = 10
+        count: Int = 10
     ) async -> PhotosResult {
         guard var components: URLComponents = .init(string: API.curatedPhotos)
         else { return .failure(.badURL) }
         let param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
-                                          .init(name: P.perPage, value: results.string)]
+                                          .init(name: P.perPage, value: count.string)]
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }
@@ -66,15 +66,15 @@ public extension PexelsSwift {
     /// Get a list of curated ``PSPhoto``
     /// - Parameters:
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - completion: A result type of ``PhotosResult``
     func getCuratedPhotos(
         page: Int = 1,
-        count results: Int = 10,
+        count: Int = 10,
         completion: @escaping (PhotosResult) -> Void
     ) {
         Task {
-            completion(await getCuratedPhotos(page: page, count: results))
+            completion(await getCuratedPhotos(page: page, count: count))
         }
     }
 
@@ -84,7 +84,7 @@ public extension PexelsSwift {
     /// - Parameters:
     ///   - query: The search query.
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - orientation: The orientation. Defaults to `nil`
     ///   - size: The minimum size. Defaults to `nil`
     ///   - color: The color. Defaults to `nil`
@@ -97,13 +97,13 @@ public extension PexelsSwift {
         color: PSColor? = nil,
         locale: PSLocale? = nil,
         page: Int = 1,
-        count results: Int = 10
+        count: Int = 10
     ) async -> PhotosResult {
         guard var components: URLComponents = .init(string: API.searchPhotos)
         else { return .failure(.badURL) }
         var param: Array<URLQueryItem> = [.init(name: P.query, value: query),
                                           .init(name: P.page, value: page.string),
-                                          .init(name: P.perPage, value: results.string)]
+                                          .init(name: P.perPage, value: count.string)]
 
         if let orientation = orientation {
             param.append(.init(name: P.orientation, value: orientation.rawValue))
@@ -127,7 +127,7 @@ public extension PexelsSwift {
     /// - Parameters:
     ///   - query: The search query.
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - orientation: The orientation. Defaults to `nil`
     ///   - size: The minimum size. Defaults to `nil`
     ///   - color: The color. Defaults to `nil`
@@ -140,12 +140,12 @@ public extension PexelsSwift {
         color: PSColor? = nil,
         locale: PSLocale? = nil,
         page: Int = 1,
-        count results: Int = 10,
+        count: Int = 10,
         completion: @escaping (PhotosResult) -> Void
     ) {
         Task {
             completion(await searchPhotos(
-                query, orientation: orientation, size: size, color: color, locale: locale, page: page, count: results
+                query, orientation: orientation, size: size, color: color, locale: locale, page: page, count: count
             ))
         }
     }
@@ -156,18 +156,18 @@ public extension PexelsSwift {
     /// - Parameters:
     ///   - categoryID: The category ID
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     /// - Returns: A result type of ``PhotosResult``
     func getPhotos(
         for categoryID: String,
         page: Int = 1,
-        count results: Int = 10
+        count: Int = 10
     ) async -> PhotosResult {
         guard var components: URLComponents = .init(string: API.collections(categoryID))
         else { return .failure(.badURL) }
         let param: Array<URLQueryItem> = [.init(name: P.type, value: "photos"),
                                           .init(name: P.page, value: page.string),
-                                          .init(name: P.perPage, value: results.string)]
+                                          .init(name: P.perPage, value: count.string)]
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }
@@ -178,16 +178,16 @@ public extension PexelsSwift {
     /// - Parameters:
     ///   - categoryID: The category ID
     ///   - page: The page/offset to get. Defaults to `1`
-    ///   - results: The number of results a page should contain. Defaults to `10`
+    ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - completion: A result type of ``PhotosResult``
     func getPhotos(
         for categoryID: String,
         page: Int = 1,
-        count results: Int = 10,
+        count: Int = 10,
         completion: @escaping (PhotosResult) -> Void
     ) {
         Task {
-            completion(await getPhotos(for: categoryID, page: page, count: results))
+            completion(await getPhotos(for: categoryID, page: page, count: count))
         }
     }
 
