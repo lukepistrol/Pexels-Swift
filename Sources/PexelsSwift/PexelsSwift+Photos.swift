@@ -159,7 +159,7 @@ public extension PexelsSwift {
     ///   - count: The number of results a page should contain. Defaults to `10`
     /// - Returns: A result type of ``PhotosResult``
     func getPhotos(
-        for categoryID: String,
+        for categoryID: CategoryID,
         page: Int = 1,
         count: Int = 10
     ) async -> PhotosResult {
@@ -181,7 +181,7 @@ public extension PexelsSwift {
     ///   - count: The number of results a page should contain. Defaults to `10`
     ///   - completion: A result type of ``PhotosResult``
     func getPhotos(
-        for categoryID: String,
+        for categoryID: CategoryID,
         page: Int = 1,
         count: Int = 10,
         completion: @escaping (PhotosResult) -> Void

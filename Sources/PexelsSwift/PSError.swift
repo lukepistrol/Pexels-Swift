@@ -9,7 +9,10 @@ import Foundation
 
 /// Error Type indicating why an operation has failed
 public enum PSError: Error, Equatable {
-    case generic(String)
+
+    public typealias ErrorDescription = String
+
+    case generic(ErrorDescription)
     case noAPIKey
     case noContent
     case badURL

@@ -12,6 +12,8 @@ public class PexelsSwift {
 
     internal init() {}
 
+    public typealias CategoryID = String
+
     /// Result type for an array of ``PSVideo``.
     public typealias VideosResult = Result<Array<PSVideo>, PSError>
 
@@ -27,7 +29,7 @@ public class PexelsSwift {
     /// Result type for an array of ``PSCollection``.
     public typealias CollectionResult = Result<Array<PSCollection>, PSError>
 
-    /// Result type for a type of **T**.
+    /// Result type for a generic type of `<T>`.
     internal typealias PSResult<T> = Result<T, PSError>
     
 
@@ -101,7 +103,7 @@ public class PexelsSwift {
 
     // MARK: Fetch Generic Type
 
-    /// Fetch **T** from [`URL`](https://developer.apple.com/documentation/foundation/url)
+    /// Fetch generic type `<T>` from [`URL`](https://developer.apple.com/documentation/foundation/url)
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``PSResult``.
     internal func fetch<T: Codable>(url: URL) async -> PSResult<T> {

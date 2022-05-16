@@ -8,7 +8,7 @@
 import Foundation
 
 extension PexelsSwift {
-    /// Content Results Wrapper with generic type <T>
+    /// Content Results Wrapper with generic type `<T>`
     struct ContentResults<T: Codable>: Codable {
         enum CodingKeys: String, CodingKey {
             case photos, media, videos, page
