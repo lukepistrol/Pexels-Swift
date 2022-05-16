@@ -1,5 +1,5 @@
 //
-//  PSQueryParameter.swift
+//  PexelsSwift+QueryParameter.swift
 //  
 //
 //  Created by Lukas Pistrol on 16.05.22.
@@ -9,7 +9,7 @@ import Foundation
 
 internal extension PexelsSwift {
     /// A collection of query parameters
-    enum PSQueryParameter {
+    enum QueryParameter {
         public static let query = "query"
         public static let page = "page"
         public static let perPage = "par_page"

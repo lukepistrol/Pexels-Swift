@@ -9,7 +9,7 @@ import Foundation
 
 public extension PexelsSwift {
 
-    private typealias P = PSQueryParameter
+    private typealias P = QueryParameter
 
     // MARK: Get Photo
 
