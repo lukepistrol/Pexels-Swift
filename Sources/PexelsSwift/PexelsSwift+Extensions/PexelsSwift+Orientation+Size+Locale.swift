@@ -1,5 +1,5 @@
 //
-//  PexelsSwift+Orientation+Size.swift
+//  PexelsSwift+Orientation+Size+Locale.swift
 //  
 //
 //  Created by Lukas Pistrol on 13.05.22.

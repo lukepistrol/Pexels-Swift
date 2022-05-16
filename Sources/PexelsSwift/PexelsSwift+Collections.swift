@@ -9,6 +9,8 @@ import Foundation
 
 public extension PexelsSwift {
 
+    private typealias P = PSQueryParameter
+
     // MARK: Get Collections
 
     /// Get a list of ``PSCollection``
@@ -20,8 +22,14 @@ public extension PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> CollectionResult {
+        guard var components: URLComponents = .init(string: API.featuredCollections)
+        else { return .failure(.badURL) }
+        let param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
+                                          .init(name: P.perPage, value: results.string)]
+
+        components.queryItems = param
+        guard let url = components.url else { return .failure(.badURL) }
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        let url = URL(string: "https://api.pexels.com/v1/collections/featured?page=\(page)&per_page=\(results)")!
 
         let result: Result<CollectionResults, PSError> = await fetch(url: url)
         switch result {

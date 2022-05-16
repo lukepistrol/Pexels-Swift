@@ -9,6 +9,8 @@ import Foundation
 
 public extension PexelsSwift {
 
+    private typealias P = PSQueryParameter
+
     // MARK: Get Video
 
     /// Gets a single ``PSVideo`` based on a given ID
@@ -18,7 +20,8 @@ public extension PexelsSwift {
     /// - Returns: A result type of ``VideoResult``
     func getVideo(by id: Int) async -> VideoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        let url = URL(string: API.videoByID + "/\(id)")!
+        guard let url = URL(string: API.videoByID)?.appendingPathComponent(id.string)
+        else { return .failure(.badURL) }
         let result: Result<PSVideo, PSError> = await fetch(url: url)
         switch result {
         case .failure(let error): return .failure(error)
@@ -57,20 +60,21 @@ public extension PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> VideosResult {
-        var components: URLComponents = .init(string: API.popularVideos)!
-        var param: Array<URLQueryItem> = [.init(name: "page", value: "\(page)"),
-                                          .init(name: "per_page", value: "\(results)")]
+        guard var components: URLComponents = .init(string: API.popularVideos)
+        else { return .failure(.badURL) }
+        var param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
+                                          .init(name: P.perPage, value: results.string)]
         if let minimumWidth = minimumWidth {
-            param.append(.init(name: "min_width", value: "\(minimumWidth)"))
+            param.append(.init(name: P.minWidth, value: minimumWidth.string))
         }
         if let minimumHeight = minimumHeight {
-            param.append(.init(name: "min_height", value: "\(minimumHeight)"))
+            param.append(.init(name: P.minHeight, value: minimumHeight.string))
         }
         if let minimumDuration = minimumDuration {
-            param.append(.init(name: "min_duration", value: "\(minimumDuration)"))
+            param.append(.init(name: P.minDuration, value: minimumDuration.string))
         }
         if let maximumDuration = maximumDuration {
-            param.append(.init(name: "max_duration", value: "\(maximumDuration)"))
+            param.append(.init(name: P.maxDuration, value: maximumDuration.string))
         }
 
         components.queryItems = param
@@ -127,18 +131,19 @@ public extension PexelsSwift {
         page: Int = 1,
         results: Int = 10
     ) async -> VideosResult {
-        var components: URLComponents = .init(string: API.searchVideos)!
-        var param: Array<URLQueryItem> = [.init(name: "query", value: query),
-                                          .init(name: "page", value: "\(page)"),
-                                          .init(name: "per_page", value: "\(results)")]
+        guard var components: URLComponents = .init(string: API.searchVideos)
+        else { return .failure(.badURL) }
+        var param: Array<URLQueryItem> = [.init(name: P.query, value: query),
+                                          .init(name: P.page, value: page.string),
+                                          .init(name: P.perPage, value: results.string)]
         if let orientation = orientation {
-            param.append(.init(name: "orientation", value: orientation.rawValue))
+            param.append(.init(name: P.orientation, value: orientation.rawValue))
         }
         if let size = size {
-            param.append(.init(name: "size", value: size.rawValue))
+            param.append(.init(name: P.size, value: size.rawValue))
         }
         if let locale = locale {
-            param.append(.init(name: "locale", value: locale.rawValue))
+            param.append(.init(name: P.locale, value: locale.rawValue))
         }
 
         components.queryItems = param
@@ -189,10 +194,11 @@ public extension PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> VideosResult {
-        var components: URLComponents = .init(string: API.collections + "/\(categoryID)")!
-        let param: Array<URLQueryItem> = [.init(name: "type", value: "videos"),
-                                          .init(name: "page", value: "\(page)"),
-                                          .init(name: "per_page", value: "\(results)")]
+        guard var components: URLComponents = .init(string: API.collections(categoryID))
+        else { return .failure(.badURL) }
+        let param: Array<URLQueryItem> = [.init(name: P.type, value: "videos"),
+                                          .init(name: P.page, value: page.string),
+                                          .init(name: P.perPage, value: results.string)]
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension Data {
+internal extension Data {
     func prettyJSON() -> String? {
         if let json = try? JSONSerialization.jsonObject(with: self, options: .mutableContainers),
            let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {

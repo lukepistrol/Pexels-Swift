@@ -9,6 +9,8 @@ import Foundation
 
 public extension PexelsSwift {
 
+    private typealias P = PSQueryParameter
+
     // MARK: Get Photo
 
     /// Gets a single ``PSPhoto`` based on a given ID
@@ -18,7 +20,8 @@ public extension PexelsSwift {
     /// - Returns: A result type of ``PhotoResult``
     func getPhoto(by id: Int) async -> PhotoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
-        let url = URL(string: API.photoByID + "/\(id)")!
+        guard let url = URL(string: API.photoByID)?.appendingPathComponent(id.string)
+        else { return .failure(.badURL) }
 
         let result: Result<PSPhoto, PSError> = await fetch(url: url)
         switch result {
@@ -50,9 +53,10 @@ public extension PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> PhotosResult {
-        var components: URLComponents = .init(string: API.curatedPhotos)!
-        let param: Array<URLQueryItem> = [.init(name: "page", value: "\(page)"),
-                                          .init(name: "per_page", value: "\(results)")]
+        guard var components: URLComponents = .init(string: API.curatedPhotos)
+        else { return .failure(.badURL) }
+        let param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
+                                          .init(name: P.perPage, value: results.string)]
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }
@@ -95,22 +99,23 @@ public extension PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> PhotosResult {
-        var components: URLComponents = .init(string: API.searchPhotos)!
-        var param: Array<URLQueryItem> = [.init(name: "query", value: query),
-                                          .init(name: "page", value: "\(page)"),
-                                          .init(name: "per_page", value: "\(results)")]
+        guard var components: URLComponents = .init(string: API.searchPhotos)
+        else { return .failure(.badURL) }
+        var param: Array<URLQueryItem> = [.init(name: P.query, value: query),
+                                          .init(name: P.page, value: page.string),
+                                          .init(name: P.perPage, value: results.string)]
 
         if let orientation = orientation {
-            param.append(.init(name: "orientation", value: orientation.rawValue))
+            param.append(.init(name: P.orientation, value: orientation.rawValue))
         }
         if let size = size {
-            param.append(.init(name: "size", value: size.rawValue))
+            param.append(.init(name: P.size, value: size.rawValue))
         }
         if let color = color {
-            param.append(.init(name: "color", value: color.rawValue))
+            param.append(.init(name: P.color, value: color.rawValue))
         }
         if let locale = locale {
-            param.append(.init(name: "locale", value: locale.rawValue))
+            param.append(.init(name: P.locale, value: locale.rawValue))
         }
 
         components.queryItems = param
@@ -158,10 +163,11 @@ public extension PexelsSwift {
         page: Int = 1,
         count results: Int = 10
     ) async -> PhotosResult {
-        var components: URLComponents = .init(string: API.collections + "/\(categoryID)")!
-        let param: Array<URLQueryItem> = [.init(name: "type", value: "photos"),
-                                          .init(name: "page", value: "\(page)"),
-                                          .init(name: "per_page", value: "\(results)")]
+        guard var components: URLComponents = .init(string: API.collections(categoryID))
+        else { return .failure(.badURL) }
+        let param: Array<URLQueryItem> = [.init(name: P.type, value: "photos"),
+                                          .init(name: P.page, value: page.string),
+                                          .init(name: P.perPage, value: results.string)]
 
         components.queryItems = param
         guard let url = components.url else { return .failure(.badURL) }
