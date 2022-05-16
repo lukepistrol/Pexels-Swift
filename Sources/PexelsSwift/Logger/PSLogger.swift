@@ -55,7 +55,7 @@ public struct PSLogger {
         if (200...299).contains(response.statusCode) {
             print("\tRate Limit: \(RateLimit.value(for: response, type: .limit))")
             print("\tRemaining: \(RateLimit.value(for: response, type: .remaining))")
-            print("\tReset on: \(date(from: RateLimit.value(for: response, type: .reset))?.ISO8601Format() ?? "No Reset Date")")
+            print("\tReset on: \(date(from: RateLimit.value(for: response, type: .reset))?.description ?? "No Reset Date")")
         }
     }
 

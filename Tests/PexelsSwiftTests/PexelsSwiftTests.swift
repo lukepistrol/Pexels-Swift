@@ -30,7 +30,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testGetPhotoByID() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey, logLevel: .off)
+        pexels.setup(apiKey: apiKey, logLevel: .info)
         let result = await pexels.getPhoto(by: 2014422)
 
         switch result {

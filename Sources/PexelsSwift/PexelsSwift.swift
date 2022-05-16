@@ -114,7 +114,13 @@ public class PexelsSwift {
         var req = URLRequest(url: url)
         req.setValue(apiKey, forHTTPHeaderField: apiHeader)
         do {
-            let (data, response) = try await URLSession.shared.data(for: req)
+            var data: Data
+            var response: URLResponse
+            if #available(macOS 12.0, iOS 15.0, *) {
+                (data, response) = try await URLSession.shared.data(for: req)
+            } else { // async/await compatibility for iOS 13 & macOS 10.15
+                (data, response) = try await URLSession.shared._data(for: req)
+            }
 
             guard let response = response as? HTTPURLResponse else {
                 logger.logError(.noResponse)
