@@ -30,7 +30,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testGetPhotoByID() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.getPhoto(by: 2014422)
 
         switch result {
@@ -43,7 +43,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testCuratedPhotos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.getCuratedPhotos()
 
         switch result {
@@ -56,7 +56,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testSearchPhotos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.searchPhotos("Ocean")
 
         switch result {
@@ -69,7 +69,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testGetPhotosFromCollection() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.getPhotos(for: "hoxyyjd")
 
         switch result {
@@ -82,7 +82,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testCollections() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.getCollections()
 
         switch result {
@@ -96,8 +96,8 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testNoAPIKey() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: "", logLevel: .off)
         let result = await pexels.getCuratedPhotos()
-
         switch result {
         case .failure(let error):
             XCTAssertEqual(error, .noAPIKey)
@@ -108,7 +108,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testGetVideoByID() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.getVideo(by: 6466763)
 
         switch result {
@@ -121,7 +121,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testGetPopularVideos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.getPopularVideos()
 
         switch result {
@@ -135,7 +135,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testSearchVideos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.searchVideos("Ocean")
 
         switch result {
@@ -148,7 +148,7 @@ final class Pexels_SwiftTests: XCTestCase {
 
     func testGetVideosFromCollection() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         let result = await pexels.getVideos(for: "8xntbhr")
 
         switch result {
@@ -164,7 +164,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testGetPhotoByIDClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.getPhoto(by: 2014422) { result in
             switch result {
             case .failure(let error):
@@ -180,7 +180,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testCuratedPhotosClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.getCuratedPhotos() { result in
             switch result {
             case .failure(let error):
@@ -196,7 +196,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testSearchPhotosClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.searchPhotos("Ocean") { result in
             switch result {
             case .failure(let error):
@@ -212,7 +212,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testGetPhotosFromCollectionClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.getPhotos(for: "hoxyyjd") { result in
             switch result {
             case .failure(let error):
@@ -228,7 +228,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testCollectionsClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.getCollections { result in
             switch result {
             case .failure(let error):
@@ -244,6 +244,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testNoAPIKeyClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
+        pexels.setup(apiKey: "", logLevel: .off)
         pexels.getCuratedPhotos() { result in
             switch result {
             case .failure(let error):
@@ -259,7 +260,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testGetVideoByIDClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.getVideo(by: 6466763) { result in
             switch result {
             case .failure(let error):
@@ -275,7 +276,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testGetPopularVideosClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.getPopularVideos() { result in
             switch result {
             case .failure(let error):
@@ -291,7 +292,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testSearchVideosClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.searchVideos("Ocean") { result in
             switch result {
             case .failure(let error):
@@ -307,7 +308,7 @@ final class Pexels_SwiftTests: XCTestCase {
     func testGetVideosFromCollectionClosure() throws {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
-        pexels.setup(apiKey: apiKey)
+        pexels.setup(apiKey: apiKey, logLevel: .off)
         pexels.getVideos(for: "8xntbhr") { result in
             switch result {
             case .failure(let error):
