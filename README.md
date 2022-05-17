@@ -27,6 +27,10 @@ dependencies: [
 ],
 ```
 
+## Documentation
+
+See the full documentation [here](https://lukepistrol.github.io/Pexels-Swift/documentation/pexelsswift/) or build it locally using `⇧⌃⌘D` in Xcode once you added `Pexels-Swift` to your project.
+
 ## Usage
 
 ```swift
