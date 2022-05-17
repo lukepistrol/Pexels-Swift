@@ -1,0 +1,13 @@
+name: build-documentation
+on: [push]
+jobs:
+  build-docc:
+    runs-on: macos-12
+    steps:
+      - uses: fwcd/swift-docc-action@v1
+        with:
+          target: PexelsSwift
+          output: ./docs
+          hosting-base-path: Pexels-Swift
+          disable-indexing: 'true'
+          transform-for-static-hosting: 'true'
