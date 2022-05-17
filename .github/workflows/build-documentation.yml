@@ -16,3 +16,19 @@ jobs:
           hosting-base-path: Pexels-Swift
           disable-indexing: 'true'
           transform-for-static-hosting: 'true'
+      - name: Init new repo in dist folder and commit generated files
+        run: |
+          cd docs
+          git init
+          git add -A
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m 'deploy'
+        
+      - name: Force push to destination branch
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          force: true
+          directory: ./docs
