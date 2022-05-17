@@ -1,6 +1,6 @@
 # ``PexelsSwift``
 
-Pexels.com API client library for the Swift programming language.
+Pexels.com API client library for the Swift programming language
 
 ## Overview
 
