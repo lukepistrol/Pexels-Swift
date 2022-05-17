@@ -4,7 +4,7 @@ jobs:
   build-docc:
     runs-on: macos-12
     steps:
-      - uses: fwcd/swift-docc-action@v1
+      - uses: fwcd/swift-docc-action@v1.0.2
         with:
           target: PexelsSwift
           output: ./docs
