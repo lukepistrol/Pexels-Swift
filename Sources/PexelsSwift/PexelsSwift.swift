@@ -57,6 +57,7 @@ public class PexelsSwift {
     public func setup(apiKey: String, logLevel: PSLogLevel = .info) {
         self.apiKey = apiKey
         self.logger.setLogLevel(logLevel)
+        logger.log("Setup Pexels-Swift complete")
     }
 
     // MARK: - Internal Methods
@@ -107,6 +108,7 @@ public class PexelsSwift {
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``PSResult``.
     internal func fetch<T: Codable>(url: URL) async -> PSResult<T> {
+        logger.log("Start fetching from URL: \(url.absoluteString)")
         guard !apiKey.isEmpty else {
             logger.logError(.noAPIKey)
             return .failure(.noAPIKey)

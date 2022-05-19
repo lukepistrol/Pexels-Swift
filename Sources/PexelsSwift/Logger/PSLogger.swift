@@ -31,6 +31,18 @@ public struct PSLogger {
         self.logLevel = logLevel
     }
 
+
+    /// Logs a message to the console
+    ///
+    /// - Note: Only logs to the console if the ``logLevel`` is
+    /// **not** set to ``PSLogLevel/off``
+    /// - Parameter message: The message to log.
+    func log(_ message: String) {
+        guard logLevel != .off else { return }
+        print("💬 Pexels-Swift")
+        print("\t\(message)")
+    }
+
     /// Logs a ``PSError`` to the console
     ///
     /// - Note: Only logs to the console if the ``logLevel`` is
@@ -66,11 +78,11 @@ public struct PSLogger {
     func logData(_ data: Data) {
         guard logLevel == .debug else { return }
         if let json = data.prettyJSON() {
-            print("🔵 Pexels-Swift")
+            print("✅ Pexels-Swift")
             print("\tData:")
             print(json)
         } else {
-            print("🟠 Pexels-Swift")
+            print("⚠️ Pexels-Swift")
             print("\tInvalid JSON Data")
         }
     }
