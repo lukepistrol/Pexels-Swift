@@ -2,13 +2,14 @@
 
 ARCH=""
 API_KEY=""
-
-if [ $# -eq 0 ]; then
-    ARCH="x86_64"
-    API_KEY=$1
-elif [ $1 = "arm" ]; then
+    
+if [ $1 = "arm" ]
+then
     ARCH="arm64"
     API_KEY=$2
+else
+    ARCH="x86_64"
+    API_KEY=$1
 fi
 
 echo "Building with arch: ${ARCH}"
