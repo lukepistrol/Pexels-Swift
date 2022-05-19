@@ -10,7 +10,7 @@ import XCTest
 
 final class Pexels_SwiftTests: XCTestCase {
 
-//    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
+    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
 
     let timeOut: TimeInterval = 20
     let logLevel: PSLogLevel = .off
