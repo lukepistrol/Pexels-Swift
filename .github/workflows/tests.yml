@@ -14,4 +14,4 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Testing Package
-        run: exec ./.github/scripts/test.sh arm ${{ secrets.PEXELS_API_KEY }}
+        run: exec ./.github/scripts/tests.sh arm ${{ secrets.PEXELS_API_KEY }}
