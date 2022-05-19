@@ -56,6 +56,10 @@ I've built a simple iOS app - [PexelsBrowser](https://github.com/lukepistrol/Pex
 
 ## Topics
 
+### Essentials
+
+- <doc:Getting-Started>
+
 ### Classes
 
 - ``PexelsSwift/PexelsSwift``

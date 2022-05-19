@@ -14,6 +14,8 @@ Make sure to also set your API key using ``setup(apiKey:logLevel:)``.
 pexels.setAPIKey("YOUR_SECRET_API_KEY")
 ```
 
+> For more information see the <doc:Getting-Started> guide.
+
 ## Topics
 
 ### Accessor
