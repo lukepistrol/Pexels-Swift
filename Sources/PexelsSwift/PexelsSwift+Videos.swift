@@ -9,6 +9,7 @@ import Foundation
 
 public extension PexelsSwift {
 
+    // swiftlint:disable:next type_name
     private typealias P = QueryParameter
 
     // MARK: Get Video
@@ -62,7 +63,7 @@ public extension PexelsSwift {
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.popularVideos)
         else { return .failure(.badURL) }
-        var param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
+        var param: [URLQueryItem] = [.init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
         if let minimumWidth = minimumWidth {
             param.append(.init(name: P.minWidth, value: minimumWidth.string))
@@ -133,7 +134,7 @@ public extension PexelsSwift {
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.searchVideos)
         else { return .failure(.badURL) }
-        var param: Array<URLQueryItem> = [.init(name: P.query, value: query),
+        var param: [URLQueryItem] = [.init(name: P.query, value: query),
                                           .init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
         if let orientation = orientation {
@@ -196,7 +197,7 @@ public extension PexelsSwift {
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.collections(categoryID))
         else { return .failure(.badURL) }
-        let param: Array<URLQueryItem> = [.init(name: P.type, value: "videos"),
+        let param: [URLQueryItem] = [.init(name: P.type, value: "videos"),
                                           .init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
 

@@ -8,7 +8,8 @@
 import XCTest
 @testable import PexelsSwift
 
-final class Pexels_SwiftTests: XCTestCase {
+// swiftlint:disable:next type_body_length
+final class PexelsSwiftTests: XCTestCase {
 
     let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
 
@@ -97,11 +98,11 @@ final class Pexels_SwiftTests: XCTestCase {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: "", logLevel: logLevel)
         let result = await pexels.getCuratedPhotos(count: 1)
-        
+
         switch result {
         case .failure(let error):
             XCTAssertEqual(error, .noAPIKey)
-        case .success(_):
+        case .success:
             XCTFail("Should not return a value")
         }
     }
@@ -249,7 +250,7 @@ final class Pexels_SwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTAssertEqual(error, .noAPIKey)
-            case .success(_):
+            case .success:
                 XCTFail("Should not return a value")
             }
             expectation.fulfill()

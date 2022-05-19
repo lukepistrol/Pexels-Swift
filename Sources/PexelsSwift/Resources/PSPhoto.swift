@@ -44,15 +44,16 @@ public struct PSPhoto: Identifiable, Codable, Equatable {
     public var averageColor: String
 
     /// A collection of URLs of different image sizes that can be used to display this ``PSPhoto``.
-    public var source: Dictionary<Size.RawValue,String>
+    public var source: [Size.RawValue: String]
 
     /// Text description of the photo for use in the `alt` attribute (HTML).
     public var alternateDescription: String
 
     /// Keys for different image sizes that can be used to display this ``PSPhoto``
     public enum Size: String {
-        
-        /// The image without any size changes. It will be the same as the ``PSPhoto/width`` and ``PSPhoto/height`` attributes.
+
+        /// The image without any size changes. It will be the same as 
+        /// the ``PSPhoto/width`` and ``PSPhoto/height`` attributes.
         case original
 
         /// the image resized to `940px X 650px @2x`

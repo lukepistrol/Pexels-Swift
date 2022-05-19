@@ -9,6 +9,7 @@ import Foundation
 
 public extension PexelsSwift {
 
+    // swiftlint:disable:next type_name
     private typealias P = QueryParameter
 
     // MARK: Get Collections
@@ -24,7 +25,7 @@ public extension PexelsSwift {
     ) async -> CollectionResult {
         guard var components: URLComponents = .init(string: API.featuredCollections)
         else { return .failure(.badURL) }
-        let param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
+        let param: [URLQueryItem] = [.init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
 
         components.queryItems = param

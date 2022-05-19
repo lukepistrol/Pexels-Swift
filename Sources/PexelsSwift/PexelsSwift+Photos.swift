@@ -9,6 +9,7 @@ import Foundation
 
 public extension PexelsSwift {
 
+    // swiftlint:disable:next type_name
     private typealias P = QueryParameter
 
     // MARK: Get Photo
@@ -55,7 +56,7 @@ public extension PexelsSwift {
     ) async -> PhotosResult {
         guard var components: URLComponents = .init(string: API.curatedPhotos)
         else { return .failure(.badURL) }
-        let param: Array<URLQueryItem> = [.init(name: P.page, value: page.string),
+        let param: [URLQueryItem] = [.init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
 
         components.queryItems = param
@@ -101,7 +102,7 @@ public extension PexelsSwift {
     ) async -> PhotosResult {
         guard var components: URLComponents = .init(string: API.searchPhotos)
         else { return .failure(.badURL) }
-        var param: Array<URLQueryItem> = [.init(name: P.query, value: query),
+        var param: [URLQueryItem] = [.init(name: P.query, value: query),
                                           .init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
 
@@ -165,7 +166,7 @@ public extension PexelsSwift {
     ) async -> PhotosResult {
         guard var components: URLComponents = .init(string: API.collections(categoryID))
         else { return .failure(.badURL) }
-        let param: Array<URLQueryItem> = [.init(name: P.type, value: "photos"),
+        let param: [URLQueryItem] = [.init(name: P.type, value: "photos"),
                                           .init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
 

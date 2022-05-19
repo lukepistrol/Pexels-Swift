@@ -38,10 +38,10 @@ public struct PSVideo: Identifiable, Codable, Equatable {
     public var user: Videographer
 
     /// An array of different sized versions of the video.
-    public var videoFiles: Array<File>
+    public var videoFiles: [File]
 
     /// An array of preview pictures of the video.
-    public var videoPictures: Array<Preview>
+    public var videoPictures: [Preview]
 
     /// A structure representing a videographer
     public struct Videographer: Identifiable, Codable, Equatable {
@@ -104,6 +104,4 @@ public struct PSVideo: Identifiable, Codable, Equatable {
         /// The index in the array.
         public var index: Int
     }
-
-
 }

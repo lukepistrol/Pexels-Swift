@@ -31,7 +31,6 @@ public class PexelsSwift {
 
     /// Result type for a generic type of `<T>`.
     internal typealias PSResult<T> = Result<T, PSError>
-    
 
     /// The singleton instance of ``PexelsSwift``
     public static let shared: PexelsSwift = .init()

@@ -1,0 +1,11 @@
+disabled_rules:
+  - trailing_comma
+  - nesting
+
+identifier_name:
+  min_length: 2
+  excluded:
+    - hd
+    - sd
+    - id
+  allowed_symbols: ["_"]

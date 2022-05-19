@@ -14,7 +14,7 @@ import Foundation
 /// - Note: Remember to set the ``PSLogLevel`` to ``PSLogLevel/off`` once
 /// moving to `production`!
 public struct PSLogger {
-    
+
     private typealias RateLimit = PexelsSwift.RateLimit
 
     /// Returns the current ``PSLogLevel``.
@@ -30,7 +30,6 @@ public struct PSLogger {
     func setLogLevel(_ logLevel: PSLogLevel) {
         self.logLevel = logLevel
     }
-
 
     /// Logs a message to the console
     ///
@@ -67,7 +66,8 @@ public struct PSLogger {
         if (200...299).contains(response.statusCode) {
             print("\tRate Limit: \(RateLimit.value(for: response, type: .limit))")
             print("\tRemaining: \(RateLimit.value(for: response, type: .remaining))")
-            print("\tReset on: \(date(from: RateLimit.value(for: response, type: .reset))?.description ?? "No Reset Date")")
+            let resetDate = RateLimit.value(for: response, type: .reset)
+            print("\tReset on: \(date(from: resetDate)?.description ?? "No Reset Date")")
         }
     }
 
@@ -87,7 +87,8 @@ public struct PSLogger {
         }
     }
 
-    /// Converts a string in the UNIX timestamp format to [Date](https://developer.apple.com/documentation/foundation/date)
+    /// Converts a string in the UNIX timestamp format 
+    /// to [Date](https://developer.apple.com/documentation/foundation/date)
     /// - Parameter timestamp: The UNIX timestamp string.
     /// - Returns: A Date or `nil` when the timestamp is invalid.
     private func date(from timestamp: String) -> Date? {

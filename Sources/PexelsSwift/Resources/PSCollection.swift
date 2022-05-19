@@ -37,6 +37,6 @@ public struct PSCollection: Identifiable, Codable, Equatable {
     public var photosCount: Int
 
     /// The total number of videos included in this collection.
-    public var videosCount: Int 
+    public var videosCount: Int
 
 }

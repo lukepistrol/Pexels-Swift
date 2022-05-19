@@ -17,9 +17,9 @@ extension PexelsSwift {
             case previousPage = "prev_page"
             case nextPage = "next_page"
         }
-        var photos: Array<PSPhoto>? // When searching, or featured
-        var media: Array<T>? // When fetching from collections
-        var videos: Array<PSVideo>? // When fetching videos
+        var photos: [PSPhoto]? // When searching, or featured
+        var media: [T]? // When fetching from collections
+        var videos: [PSVideo]? // When fetching videos
         var page: Int
         var perPage: Int
         var totalResults: Int
@@ -37,7 +37,7 @@ extension PexelsSwift {
             case nextPage = "next_page"
         }
 
-        var collections: Array<PSCollection>
+        var collections: [PSCollection]
         var page: Int
         var perPage: Int
         var totalResults: Int
