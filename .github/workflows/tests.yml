@@ -2,10 +2,10 @@ name: tests
 on:
   push:
     branches:
-      - 'test'
+      - 'main'
   pull_request:
     branches:
-      - 'test'
+      - 'main'
 jobs:
   pexels-swift-tests:
     name: Testing Pexels-Swift
