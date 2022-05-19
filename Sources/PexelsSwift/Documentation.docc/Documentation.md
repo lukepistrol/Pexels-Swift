@@ -65,6 +65,7 @@ I've built a simple iOS app - [PexelsBrowser](https://github.com/lukepistrol/Pex
 - ``PexelsSwift/PSPhoto``
 - ``PexelsSwift/PSVideo``
 - ``PexelsSwift/PSCollection``
+- ``PexelsSwift/PSMetaData``
 
 ### Logger
 

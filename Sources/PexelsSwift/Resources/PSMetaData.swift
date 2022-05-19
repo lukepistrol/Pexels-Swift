@@ -17,17 +17,17 @@ public struct PSMetaData: Codable {
         case nextPage = "next_page"
     }
     /// The current page
-    var page: Int
+    public var page: Int
 
     /// The number of results on this page
-    var perPage: Int
+    public var perPage: Int
 
     /// The total number of results
-    var totalResults: Int
+    public var totalResults: Int
 
     /// The URL-Path of the previous page if available.
-    var previousPage: String?
+    public var previousPage: String?
 
     /// The URL-Path of the next page if available.
-    var nextPage: String?
+    public var nextPage: String?
 }
