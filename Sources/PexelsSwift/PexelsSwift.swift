@@ -15,19 +15,19 @@ public class PexelsSwift {
     public typealias CategoryID = String
 
     /// Result type for an array of ``PSVideo``.
-    public typealias VideosResult = Result<(content: Array<PSVideo>, metadata: PSMetaData), PSError>
+    public typealias VideosResult = Result<(content: [PSVideo], metadata: PSMetaData), PSError>
 
     /// Result type for a single ``PSVideo``.
     public typealias VideoResult = Result<PSVideo, PSError>
 
     /// Result type for an array of ``PSPhoto``.
-    public typealias PhotosResult = Result<(content: Array<PSPhoto>, metadata: PSMetaData), PSError>
+    public typealias PhotosResult = Result<(content: [PSPhoto], metadata: PSMetaData), PSError>
 
     /// Result type for a single ``PSPhoto``.
     public typealias PhotoResult = Result<PSPhoto, PSError>
 
     /// Result type for an array of ``PSCollection``.
-    public typealias CollectionResult = Result<(content: Array<PSCollection>, metadata: PSMetaData), PSError>
+    public typealias CollectionResult = Result<(content: [PSCollection], metadata: PSMetaData), PSError>
 
     /// Result type for a generic type of `<T>`.
     internal typealias PSResult<T> = Result<T, PSError>
