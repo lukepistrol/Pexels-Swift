@@ -52,8 +52,10 @@ public class PexelsSwift {
     /// Set the API key to make API Queries.
     ///
     /// An API Key can be obtained from [here](https://www.pexels.com/api/)
-    /// - Parameter apiKey: The API Key
-    /// - Parameter logLevel: The `logLevel` to use. Defaults to ``PSLogLevel/info``.
+    /// - Attention: The `apiKey` must not be empty!
+    /// - Parameters:
+    ///   - apiKey: The API Key.
+    ///   - logLevel: The `logLevel` to use. Defaults to ``PSLogLevel/info``.
     public func setup(apiKey: String, logLevel: PSLogLevel = .info) {
         self.apiKey = apiKey
         self.logger.setLogLevel(logLevel)

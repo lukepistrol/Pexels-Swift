@@ -10,7 +10,7 @@ import XCTest
 
 final class Pexels_SwiftTests: XCTestCase {
 
-    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
+//    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
 
     let timeOut: TimeInterval = 20
     let logLevel: PSLogLevel = .off
@@ -19,7 +19,6 @@ final class Pexels_SwiftTests: XCTestCase {
 
     override func setUp() async throws {
         self.pexels = PexelsSwift()
-        print("API KEY: ", apiKey)
     }
 
     override func tearDown() async throws {
