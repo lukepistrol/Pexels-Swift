@@ -10,16 +10,13 @@ import XCTest
 
 final class Pexels_SwiftTests: XCTestCase {
 
-    /*
-     Uncomment the following line and fill
-     in your API key to run tests.
-     */
-    // let apiKey = "YOUR_API_KEY"
+    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
 
     var pexels: PexelsSwift?
 
     override func setUp() async throws {
         self.pexels = PexelsSwift()
+        print("API KEY: ", apiKey)
     }
 
     override func tearDown() async throws {
