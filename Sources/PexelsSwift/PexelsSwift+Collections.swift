@@ -34,7 +34,15 @@ public extension PexelsSwift {
         let result: Result<CollectionResults, PSError> = await fetch(url: url)
         switch result {
         case .failure(let error): return .failure(error)
-        case .success(let wrapper): return .success(wrapper.collections)
+        case .success(let wrapper):
+            let metaData = PSMetaData(
+                page: wrapper.page,
+                perPage: wrapper.perPage,
+                totalResults: wrapper.totalResults,
+                previousPage: wrapper.previousPage,
+                nextPage: wrapper.nextPage
+            )
+            return .success((wrapper.collections, metaData))
         }
     }
 

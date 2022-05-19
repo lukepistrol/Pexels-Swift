@@ -10,7 +10,7 @@ import XCTest
 
 final class Pexels_SwiftTests: XCTestCase {
 
-    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
+//    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
 
     let timeOut: TimeInterval = 20
     let logLevel: PSLogLevel = .off
@@ -48,7 +48,7 @@ final class Pexels_SwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let photos):
+        case .success(let (photos, _)):
             XCTAssertFalse(photos.isEmpty)
         }
     }
@@ -61,7 +61,7 @@ final class Pexels_SwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let photos):
+        case .success(let (photos, _)):
             XCTAssertFalse(photos.isEmpty)
         }
     }
@@ -74,7 +74,7 @@ final class Pexels_SwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let photos):
+        case .success(let (photos, _)):
             XCTAssertFalse(photos.isEmpty)
         }
     }
@@ -87,7 +87,7 @@ final class Pexels_SwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let categories):
+        case .success(let (categories, _)):
             XCTAssertFalse(categories.isEmpty)
         }
 
@@ -127,7 +127,7 @@ final class Pexels_SwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let videos):
+        case .success(let (videos, _)):
             XCTAssertFalse(videos.isEmpty)
         }
 
@@ -141,7 +141,7 @@ final class Pexels_SwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let videos):
+        case .success(let (videos, _)):
             XCTAssertFalse(videos.isEmpty)
         }
     }
@@ -154,7 +154,7 @@ final class Pexels_SwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let videos):
+        case .success(let (videos, _)):
             XCTAssertFalse(videos.isEmpty)
         }
     }
@@ -185,7 +185,7 @@ final class Pexels_SwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let photos):
+            case .success(let (photos, _)):
                 XCTAssertFalse(photos.isEmpty)
             }
             expectation.fulfill()
@@ -201,7 +201,7 @@ final class Pexels_SwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let photos):
+            case .success(let (photos, _)):
                 XCTAssertFalse(photos.isEmpty)
             }
             expectation.fulfill()
@@ -217,7 +217,7 @@ final class Pexels_SwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let photos):
+            case .success(let (photos, _)):
                 XCTAssertFalse(photos.isEmpty)
             }
             expectation.fulfill()
@@ -233,7 +233,7 @@ final class Pexels_SwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let categories):
+            case .success(let (categories, _)):
                 XCTAssertFalse(categories.isEmpty)
             }
             expectation.fulfill()
@@ -281,7 +281,7 @@ final class Pexels_SwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let videos):
+            case .success(let (videos, _)):
                 XCTAssertFalse(videos.isEmpty)
             }
             expectation.fulfill()
@@ -297,7 +297,7 @@ final class Pexels_SwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let videos):
+            case .success(let (videos, _)):
                 XCTAssertFalse(videos.isEmpty)
             }
             expectation.fulfill()
@@ -313,7 +313,7 @@ final class Pexels_SwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let videos):
+            case .success(let (videos, _)):
                 XCTAssertFalse(videos.isEmpty)
             }
             expectation.fulfill()

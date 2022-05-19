@@ -35,7 +35,7 @@ let result = await pexels.getCuratedPhotos()
 switch result {
 case .failure(let error):
     print(error.description)
-case .success(let photos):
+case .success(let (photos, metadata)):
     // access photos
 }
 
@@ -44,7 +44,7 @@ pexels.getCuratedPhotos() { result in
     switch result {
     case .failure(let error):
         print(error.description)
-    case .success(let photos):
+    case .success(let (photos, metadata)):
         // access photos
     }
 }

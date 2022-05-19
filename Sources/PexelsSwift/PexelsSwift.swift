@@ -15,19 +15,19 @@ public class PexelsSwift {
     public typealias CategoryID = String
 
     /// Result type for an array of ``PSVideo``.
-    public typealias VideosResult = Result<Array<PSVideo>, PSError>
+    public typealias VideosResult = Result<(content: Array<PSVideo>, metadata: PSMetaData), PSError>
 
     /// Result type for a single ``PSVideo``.
     public typealias VideoResult = Result<PSVideo, PSError>
 
     /// Result type for an array of ``PSPhoto``.
-    public typealias PhotosResult = Result<Array<PSPhoto>, PSError>
+    public typealias PhotosResult = Result<(content: Array<PSPhoto>, metadata: PSMetaData), PSError>
 
     /// Result type for a single ``PSPhoto``.
     public typealias PhotoResult = Result<PSPhoto, PSError>
 
     /// Result type for an array of ``PSCollection``.
-    public typealias CollectionResult = Result<Array<PSCollection>, PSError>
+    public typealias CollectionResult = Result<(content: Array<PSCollection>, metadata: PSMetaData), PSError>
 
     /// Result type for a generic type of `<T>`.
     internal typealias PSResult<T> = Result<T, PSError>
@@ -74,10 +74,17 @@ public class PexelsSwift {
         switch result {
         case .failure(let error): return .failure(error)
         case .success(let wrapper):
+            let metaData = PSMetaData(
+                page: wrapper.page,
+                perPage: wrapper.perPage,
+                totalResults: wrapper.totalResults,
+                previousPage: wrapper.previousPage,
+                nextPage: wrapper.nextPage
+            )
             if let photos = wrapper.photos {
-                return .success(photos)
+                return .success((photos, metaData))
             } else if let media = wrapper.media {
-                return .success(media)
+                return .success((media, metaData))
             } else {
                 return .failure(.noContent)
             }
@@ -94,10 +101,17 @@ public class PexelsSwift {
         switch result {
         case .failure(let error): return .failure(error)
         case .success(let wrapper):
+            let metaData = PSMetaData(
+                page: wrapper.page,
+                perPage: wrapper.perPage,
+                totalResults: wrapper.totalResults,
+                previousPage: wrapper.previousPage,
+                nextPage: wrapper.nextPage
+            )
             if let videos = wrapper.videos {
-                return .success(videos)
+                return .success((videos, metaData))
             } else if let media = wrapper.media {
-                return .success(media)
+                return .success((media, metaData))
             } else {
                 return .failure(.noContent)
             }
