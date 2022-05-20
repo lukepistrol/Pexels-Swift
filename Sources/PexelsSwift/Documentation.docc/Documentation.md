@@ -35,7 +35,7 @@ let result = await pexels.getCuratedPhotos()
 switch result {
 case .failure(let error):
     print(error.description)
-case .success(let (photos, metadata)):
+case .success(let (photos, pageInfo)):
     // access photos
 }
 
@@ -44,7 +44,7 @@ pexels.getCuratedPhotos() { result in
     switch result {
     case .failure(let error):
         print(error.description)
-    case .success(let (photos, metadata)):
+    case .success(let (photos, pageInfo)):
         // access photos
     }
 }
@@ -69,7 +69,7 @@ I've built a simple iOS app - [PexelsBrowser](https://github.com/lukepistrol/Pex
 - ``PexelsSwift/PSPhoto``
 - ``PexelsSwift/PSVideo``
 - ``PexelsSwift/PSCollection``
-- ``PexelsSwift/PSMetaData``
+- ``PexelsSwift/PSPagingInfo``
 
 ### Logger
 

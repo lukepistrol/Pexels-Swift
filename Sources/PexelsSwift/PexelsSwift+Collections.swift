@@ -36,7 +36,7 @@ public extension PexelsSwift {
         switch result {
         case .failure(let error): return .failure(error)
         case .success(let wrapper):
-            let metaData = PSMetaData(
+            let metaData = PSPagingInfo(
                 page: wrapper.page,
                 perPage: wrapper.perPage,
                 totalResults: wrapper.totalResults,

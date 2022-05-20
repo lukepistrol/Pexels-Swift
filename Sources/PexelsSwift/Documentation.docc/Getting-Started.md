@@ -13,7 +13,7 @@ To add ``PexelsSwift`` to your project simply add the following line to your `Pa
 ```swift
 ...
 dependencies: [
-.package(url: "https://github.com/lukepistrol/Pexels-Swift.git", from: "0.1.0")
+    .package(url: "https://github.com/lukepistrol/Pexels-Swift.git", from: "0.1.0")
 ],
 ...
 ```
@@ -51,7 +51,7 @@ case .failure(let error):
     print(error.description)
     // handle the error
 // access the result's content
-case .success(let (photos, metadata)):
+case .success(let (photos, pageInfo)):
     ...
 }
 ```
@@ -59,7 +59,7 @@ case .success(let (photos, metadata)):
 In the code above you can see we get `photos` and `metadata` from our result in the `.success` case.
 
 - **photos** is an array of ``PSPhoto``.
-- **metadata** is a struct ``PSMetaData`` which contains some information for paging like the current page, results per page, the URL to the next/previous page and the number of total results.
+- **pageInfo** is a struct ``PSPagingInfo`` which contains some information for paging like the current page, results per page, the URL to the next/previous page and the number of total results.
 
 ### Get the Image URL
 
@@ -68,7 +68,7 @@ Now we want to get the URLs for the thumbnails of the fetched images.
 ```swift
 switch result {
 ...
-case .success(let (photos, metadata)):
+case .success(let (photos, pageInfo)):
     let urls = photos.compactMap { 
         URL(string: $0.source[PSPhoto.Size.tiny.rawValue]) 
     }
