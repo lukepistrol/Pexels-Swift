@@ -68,6 +68,8 @@ public struct PSLogger {
             print("\tRemaining: \(RateLimit.value(for: response, type: .remaining))")
             let resetDate = RateLimit.value(for: response, type: .reset)
             print("\tReset on: \(date(from: resetDate)?.description ?? "No Reset Date")")
+        } else {
+            print("\tResponse: \(response.description)")
         }
     }
 
@@ -91,7 +93,7 @@ public struct PSLogger {
     /// to [Date](https://developer.apple.com/documentation/foundation/date)
     /// - Parameter timestamp: The UNIX timestamp string.
     /// - Returns: A Date or `nil` when the timestamp is invalid.
-    private func date(from timestamp: String) -> Date? {
+    internal func date(from timestamp: String) -> Date? {
         if let interval = TimeInterval(timestamp) {
             return Date(timeIntervalSince1970: interval)
         }
