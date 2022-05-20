@@ -8,7 +8,7 @@
 import Foundation
 
 /// Metadata useful for paging (page, total results, next page, ...)
-public struct PSMetaData: Codable {
+public struct PSPagingInfo: Codable {
     enum CodingKeys: String, CodingKey {
         case page
         case perPage = "per_page"

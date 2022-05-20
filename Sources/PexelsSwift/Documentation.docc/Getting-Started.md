@@ -59,7 +59,7 @@ case .success(let (photos, metadata)):
 In the code above you can see we get `photos` and `metadata` from our result in the `.success` case.
 
 - **photos** is an array of ``PSPhoto``.
-- **metadata** is a struct ``PSMetaData`` which contains some information for paging like the current page, results per page, the URL to the next/previous page and the number of total results.
+- **metadata** is a struct ``PSPagingInfo`` which contains some information for paging like the current page, results per page, the URL to the next/previous page and the number of total results.
 
 ### Get the Image URL
 
