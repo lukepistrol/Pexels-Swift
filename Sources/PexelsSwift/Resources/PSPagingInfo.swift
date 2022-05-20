@@ -1,5 +1,5 @@
 //
-//  PSMetaData.swift
+//  PSPagingInfo.swift
 //  
 //
 //  Created by Lukas Pistrol on 19.05.22.
