@@ -12,8 +12,7 @@ internal extension Data {
         if let json = try? JSONSerialization.jsonObject(with: self, options: .mutableContainers),
            let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
             return String(decoding: jsonData, as: UTF8.self)
-        } else {
-            return nil
         }
+        return nil
     }
 }

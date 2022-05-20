@@ -17,71 +17,63 @@ internal extension PexelsSwift {
         private static let videos: String = "videos"
 
         static var featuredCollections: String {
-            URL(string: basePath)?
+            URL(string: basePath)!
                 .appendingPathComponent(version)
                 .appendingPathComponent("collections")
                 .appendingPathComponent("featured")
                 .absoluteString
-            ?? ""
         }
 
         static func collections(_ id: String) -> String {
-            URL(string: basePath)?
+            URL(string: basePath)!
                 .appendingPathComponent(version)
                 .appendingPathComponent("collections")
                 .appendingPathComponent(id)
                 .absoluteString
-            ?? ""
         }
 
         static var searchPhotos: String {
-            URL(string: basePath)?
+            URL(string: basePath)!
                 .appendingPathComponent(version)
                 .appendingPathComponent("search")
                 .absoluteString
-            ?? ""
         }
 
         static var curatedPhotos: String {
-            URL(string: basePath)?
+            URL(string: basePath)!
                 .appendingPathComponent(version)
                 .appendingPathComponent("curated")
                 .absoluteString
-            ?? ""
         }
 
         static func photoByID(_ id: Int) -> String {
-            URL(string: basePath)?
+            URL(string: basePath)!
                 .appendingPathComponent(version)
                 .appendingPathComponent("photos")
                 .appendingPathComponent(id.string)
                 .absoluteString
-            ?? ""
         }
 
         static var searchVideos: String {
-            URL(string: basePath)?
+            URL(string: basePath)!
                 .appendingPathComponent(videos)
                 .appendingPathComponent("search")
                 .absoluteString
-            ?? ""
         }
 
         static var popularVideos: String {
-            URL(string: basePath)?
+            URL(string: basePath)!
                 .appendingPathComponent(videos)
                 .appendingPathComponent("popular")
                 .absoluteString
-            ?? ""
         }
 
         static func videoByID(_ id: Int) -> String {
-            URL(string: basePath)?
+            URL(string: basePath)!
                 .appendingPathComponent(videos)
                 .appendingPathComponent("videos")
                 .appendingPathComponent(id.string)
                 .absoluteString
-            ?? ""
         }
     }
 }

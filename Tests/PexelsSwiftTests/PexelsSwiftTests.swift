@@ -14,7 +14,7 @@ final class PexelsSwiftTests: XCTestCase {
     let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
 
     let timeOut: TimeInterval = 20
-    let logLevel: PSLogLevel = .off
+    let logLevel: PSLogLevel = .debug
 
     var pexels: PexelsSwift?
 
@@ -57,7 +57,12 @@ final class PexelsSwiftTests: XCTestCase {
     func testSearchPhotos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        let result = await pexels.searchPhotos("Ocean", count: 1)
+        let result = await pexels.searchPhotos("Ocean",
+                                               orientation: .landscape,
+                                               size: .medium,
+                                               color: .blue,
+                                               locale: .en_US,
+                                               count: 1)
 
         switch result {
         case .failure(let error):
@@ -123,7 +128,11 @@ final class PexelsSwiftTests: XCTestCase {
     func testGetPopularVideos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        let result = await pexels.getPopularVideos(count: 1)
+        let result = await pexels.getPopularVideos(minimumWidth: 100,
+                                                   minimumHeight: 100,
+                                                   minimumDuration: 1,
+                                                   maximumDuration: 10000,
+                                                   count: 1)
 
         switch result {
         case .failure(let error):
@@ -137,7 +146,11 @@ final class PexelsSwiftTests: XCTestCase {
     func testSearchVideos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        let result = await pexels.searchVideos("Ocean", count: 1)
+        let result = await pexels.searchVideos("Ocean",
+                                               orientation: .landscape,
+                                               size: .medium,
+                                               locale: .en_US,
+                                               count: 1)
 
         switch result {
         case .failure(let error):
