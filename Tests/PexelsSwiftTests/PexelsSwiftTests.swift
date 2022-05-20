@@ -15,6 +15,7 @@ final class PexelsSwiftTests: XCTestCase {
 
     let timeOut: TimeInterval = 20
     let logLevel: PSLogLevel = .debug
+    let results: Int = 1
 
     var pexels: PexelsSwift?
 
@@ -44,7 +45,7 @@ final class PexelsSwiftTests: XCTestCase {
     func testCuratedPhotos() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        let result = await pexels.getCuratedPhotos(count: 1)
+        let result = await pexels.getCuratedPhotos(count: results)
 
         switch result {
         case .failure(let error):
@@ -62,7 +63,7 @@ final class PexelsSwiftTests: XCTestCase {
                                                size: .medium,
                                                color: .blue,
                                                locale: .en_US,
-                                               count: 1)
+                                               count: results)
 
         switch result {
         case .failure(let error):
@@ -75,7 +76,7 @@ final class PexelsSwiftTests: XCTestCase {
     func testGetPhotosFromCollection() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        let result = await pexels.getPhotos(for: "hoxyyjd", count: 1)
+        let result = await pexels.getPhotos(for: "hoxyyjd", count: results)
 
         switch result {
         case .failure(let error):
@@ -88,7 +89,7 @@ final class PexelsSwiftTests: XCTestCase {
     func testCollections() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        let result = await pexels.getCollections(count: 1)
+        let result = await pexels.getCollections(count: results)
 
         switch result {
         case .failure(let error):
@@ -102,7 +103,7 @@ final class PexelsSwiftTests: XCTestCase {
     func testNoAPIKey() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: "", logLevel: logLevel)
-        let result = await pexels.getCuratedPhotos(count: 1)
+        let result = await pexels.getCuratedPhotos(count: results)
 
         switch result {
         case .failure(let error):
@@ -132,7 +133,7 @@ final class PexelsSwiftTests: XCTestCase {
                                                    minimumHeight: 100,
                                                    minimumDuration: 1,
                                                    maximumDuration: 10000,
-                                                   count: 1)
+                                                   count: results)
 
         switch result {
         case .failure(let error):
@@ -150,7 +151,7 @@ final class PexelsSwiftTests: XCTestCase {
                                                orientation: .landscape,
                                                size: .medium,
                                                locale: .en_US,
-                                               count: 1)
+                                               count: results)
 
         switch result {
         case .failure(let error):
@@ -163,7 +164,7 @@ final class PexelsSwiftTests: XCTestCase {
     func testGetVideosFromCollection() async throws {
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        let result = await pexels.getVideos(for: "8xntbhr", count: 1)
+        let result = await pexels.getVideos(for: "8xntbhr", count: results)
 
         switch result {
         case .failure(let error):
@@ -195,7 +196,7 @@ final class PexelsSwiftTests: XCTestCase {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        pexels.getCuratedPhotos(count: 1) { result in
+        pexels.getCuratedPhotos(count: results) { result in
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
@@ -211,7 +212,7 @@ final class PexelsSwiftTests: XCTestCase {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        pexels.searchPhotos("Ocean", count: 1) { result in
+        pexels.searchPhotos("Ocean", count: results) { result in
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
@@ -227,7 +228,7 @@ final class PexelsSwiftTests: XCTestCase {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        pexels.getPhotos(for: "hoxyyjd", count: 1) { result in
+        pexels.getPhotos(for: "hoxyyjd", count: results) { result in
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
@@ -243,7 +244,7 @@ final class PexelsSwiftTests: XCTestCase {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        pexels.getCollections(count: 1) { result in
+        pexels.getCollections(count: results) { result in
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
@@ -259,7 +260,7 @@ final class PexelsSwiftTests: XCTestCase {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: "", logLevel: logLevel)
-        pexels.getCuratedPhotos(count: 1) { result in
+        pexels.getCuratedPhotos(count: results) { result in
             switch result {
             case .failure(let error):
                 XCTAssertEqual(error, .noAPIKey)
@@ -291,7 +292,7 @@ final class PexelsSwiftTests: XCTestCase {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        pexels.getPopularVideos(count: 1) { result in
+        pexels.getPopularVideos(count: results) { result in
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
@@ -307,7 +308,7 @@ final class PexelsSwiftTests: XCTestCase {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        pexels.searchVideos("Ocean", count: 1) { result in
+        pexels.searchVideos("Ocean", count: results) { result in
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
@@ -323,7 +324,7 @@ final class PexelsSwiftTests: XCTestCase {
         let expectation = expectation(description: "closure")
         guard let pexels = pexels else { XCTFail("self.pexels == nil"); return }
         pexels.setup(apiKey: apiKey, logLevel: logLevel)
-        pexels.getVideos(for: "8xntbhr", count: 1) { result in
+        pexels.getVideos(for: "8xntbhr", count: results) { result in
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
