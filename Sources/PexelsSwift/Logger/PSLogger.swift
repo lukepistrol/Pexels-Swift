@@ -15,7 +15,7 @@ import Foundation
 /// moving to `production`!
 public struct PSLogger {
 
-    private typealias RateLimit = PexelsSwift.RateLimit
+    private typealias RateLimit = PexelsSwift.RateLimitType
 
     /// Returns the current ``PSLogLevel``.
     public private(set) var logLevel: PSLogLevel
@@ -64,10 +64,9 @@ public struct PSLogger {
         print("\tCode: \(response.statusCode),")
         print("\tURL: \(response.url?.absoluteString ?? "Invalid URL")")
         if (200...299).contains(response.statusCode) {
-            print("\tRate Limit: \(RateLimit.value(for: response, type: .limit))")
-            print("\tRemaining: \(RateLimit.value(for: response, type: .remaining))")
-            let resetDate = RateLimit.value(for: response, type: .reset)
-            print("\tReset on: \(date(from: resetDate)?.description ?? "No Reset Date")")
+            print("\tRate Limit: \(response.pexelsLimit?.string ?? "Fetching failed")")
+            print("\tRemaining: \(response.pexelsRemaining?.string ?? "Fetching failed")")
+            print("\tReset on: \(response.pexelsReset?.description ?? "Fetching Failed")")
         } else {
             print("\tResponse: \(response.description)")
         }
@@ -87,16 +86,5 @@ public struct PSLogger {
             print("⚠️ Pexels-Swift")
             print("\tInvalid JSON Data")
         }
-    }
-
-    /// Converts a string in the UNIX timestamp format 
-    /// to [Date](https://developer.apple.com/documentation/foundation/date)
-    /// - Parameter timestamp: The UNIX timestamp string.
-    /// - Returns: A Date or `nil` when the timestamp is invalid.
-    internal func date(from timestamp: String) -> Date? {
-        if let interval = TimeInterval(timestamp) {
-            return Date(timeIntervalSince1970: interval)
-        }
-        return nil
     }
 }

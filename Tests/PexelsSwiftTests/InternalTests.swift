@@ -10,30 +10,6 @@ import XCTest
 
 class InternalTests: XCTestCase {
 
-    func testRateLimitString() throws {
-        let response = HTTPURLResponse(
-            url: .init(string: "https://test.com")!,
-            statusCode: 200,
-            httpVersion: nil,
-            headerFields: ["X-Ratelimit-Limit": "200"]
-        )!
-
-        let value = PexelsSwift.RateLimit.value(for: response, type: .limit)
-        XCTAssertEqual("200", value)
-    }
-
-    func testRateLimitFail() throws {
-        let response = HTTPURLResponse(
-            url: .init(string: "https://test.com")!,
-            statusCode: 200,
-            httpVersion: nil,
-            headerFields: nil
-        )!
-
-        let value = PexelsSwift.RateLimit.value(for: response, type: .limit)
-        XCTAssertTrue(value.isEmpty)
-    }
-
     func testPrettyJSON() throws {
         let testData = """
 {
@@ -111,16 +87,33 @@ class InternalTests: XCTestCase {
         )
     }
 
-    func testDateFromTimeStamp() throws {
-        let result = PSLogger().date(from: "1590529646")
-        let date = Date(timeIntervalSince1970: 1590529646)
-
-        XCTAssertEqual(date, result)
+    func testRateLimitResetFailure() throws {
+        let response = HTTPURLResponse(
+            url: .init(string: "https://test.com")!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil
+        )!
+        XCTAssertNil(response.pexelsReset)
     }
 
-    func testDateFromTimeStampFail() throws {
-        let result = PSLogger().date(from: "ABC")
+    func testRateLimitFailure() throws {
+        let response = HTTPURLResponse(
+            url: .init(string: "https://test.com")!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil
+        )!
+        XCTAssertNil(response.pexelsLimit)
+    }
 
-        XCTAssertNil(result)
+    func testRateLimitRemainingFailure() throws {
+        let response = HTTPURLResponse(
+            url: .init(string: "https://test.com")!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil
+        )!
+        XCTAssertNil(response.pexelsRemaining)
     }
 }
