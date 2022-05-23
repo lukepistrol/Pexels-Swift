@@ -37,8 +37,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let photo):
-            XCTAssertEqual(photo.id, 2014422)
+        case .success(let (data, response)):
+            XCTAssertEqual(data.id, 2014422)
+            XCTAssertEqual(response.statusCode, 200)
         }
     }
 
@@ -50,8 +51,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let (photos, _)):
-            XCTAssertFalse(photos.isEmpty)
+        case .success(let (data, _, response)):
+            XCTAssertFalse(data.isEmpty)
+            XCTAssertEqual(response.statusCode, 200)
         }
     }
 
@@ -68,8 +70,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let (photos, _)):
-            XCTAssertFalse(photos.isEmpty)
+        case .success(let (data, _, response)):
+            XCTAssertFalse(data.isEmpty)
+            XCTAssertEqual(response.statusCode, 200)
         }
     }
 
@@ -81,8 +84,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let (photos, _)):
-            XCTAssertFalse(photos.isEmpty)
+        case .success(let (data, _, response)):
+            XCTAssertFalse(data.isEmpty)
+            XCTAssertEqual(response.statusCode, 200)
         }
     }
 
@@ -94,8 +98,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let (categories, _)):
-            XCTAssertFalse(categories.isEmpty)
+        case .success(let (data, _, response)):
+            XCTAssertFalse(data.isEmpty)
+            XCTAssertEqual(response.statusCode, 200)
         }
 
     }
@@ -121,8 +126,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let video):
-            XCTAssertEqual(video.id, 6466763)
+        case .success(let (data, response)):
+            XCTAssertEqual(data.id, 6466763)
+            XCTAssertEqual(response.statusCode, 200)
         }
     }
 
@@ -138,8 +144,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let (videos, _)):
-            XCTAssertFalse(videos.isEmpty)
+        case .success(let (data, _, response)):
+            XCTAssertFalse(data.isEmpty)
+            XCTAssertEqual(response.statusCode, 200)
         }
 
     }
@@ -156,8 +163,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let (videos, _)):
-            XCTAssertFalse(videos.isEmpty)
+        case .success(let (data, _, response)):
+            XCTAssertFalse(data.isEmpty)
+            XCTAssertEqual(response.statusCode, 200)
         }
     }
 
@@ -169,8 +177,9 @@ final class PexelsSwiftTests: XCTestCase {
         switch result {
         case .failure(let error):
             XCTFail(error.description)
-        case .success(let (videos, _)):
-            XCTAssertFalse(videos.isEmpty)
+        case .success(let (data, _, response)):
+            XCTAssertFalse(data.isEmpty)
+            XCTAssertEqual(response.statusCode, 200)
         }
     }
 
@@ -184,8 +193,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let photo):
-                XCTAssertEqual(photo.id, 2014422)
+            case .success(let (data, response)):
+                XCTAssertEqual(data.id, 2014422)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }
@@ -200,8 +210,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let (photos, _)):
-                XCTAssertFalse(photos.isEmpty)
+            case .success(let (data, _, response)):
+                XCTAssertFalse(data.isEmpty)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }
@@ -216,8 +227,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let (photos, _)):
-                XCTAssertFalse(photos.isEmpty)
+            case .success(let (data, _, response)):
+                XCTAssertFalse(data.isEmpty)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }
@@ -232,8 +244,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let (photos, _)):
-                XCTAssertFalse(photos.isEmpty)
+            case .success(let (data, _, response)):
+                XCTAssertFalse(data.isEmpty)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }
@@ -248,8 +261,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let (categories, _)):
-                XCTAssertFalse(categories.isEmpty)
+            case .success(let (data, _, response)):
+                XCTAssertFalse(data.isEmpty)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }
@@ -280,8 +294,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let video):
-                XCTAssertEqual(video.id, 6466763)
+            case .success(let (data, response)):
+                XCTAssertEqual(data.id, 6466763)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }
@@ -296,8 +311,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let (videos, _)):
-                XCTAssertFalse(videos.isEmpty)
+            case .success(let (data, _, response)):
+                XCTAssertFalse(data.isEmpty)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }
@@ -312,8 +328,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let (videos, _)):
-                XCTAssertFalse(videos.isEmpty)
+            case .success(let (data, _, response)):
+                XCTAssertFalse(data.isEmpty)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }
@@ -328,8 +345,9 @@ final class PexelsSwiftTests: XCTestCase {
             switch result {
             case .failure(let error):
                 XCTFail(error.description)
-            case .success(let (videos, _)):
-                XCTAssertFalse(videos.isEmpty)
+            case .success(let (data, _, response)):
+                XCTAssertFalse(data.isEmpty)
+                XCTAssertEqual(response.statusCode, 200)
             }
             expectation.fulfill()
         }

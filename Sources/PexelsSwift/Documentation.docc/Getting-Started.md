@@ -51,15 +51,16 @@ case .failure(let error):
     print(error.description)
     // handle the error
 // access the result's content
-case .success(let (photos, pageInfo)):
+case .success(let (data, paging, response)):
     ...
 }
 ```
 
 In the code above you can see we get `photos` and `metadata` from our result in the `.success` case.
 
-- **photos** is an array of ``PSPhoto``.
-- **pageInfo** is a struct ``PSPagingInfo`` which contains some information for paging like the current page, results per page, the URL to the next/previous page and the number of total results.
+- **data** is an array of ``PSPhoto``.
+- **paging** is a struct ``PSPagingInfo`` which contains some information for paging like the current page, results per page, the URL to the next/previous page and the number of total results.
+- **response** is of type [`HTTPURLResponse`](https://developer.apple.com/documentation/foundation/httpurlresponse)
 
 ### Get the Image URL
 
@@ -68,8 +69,8 @@ Now we want to get the URLs for the thumbnails of the fetched images.
 ```swift
 switch result {
 ...
-case .success(let (photos, pageInfo)):
-    let urls = photos.compactMap { 
+case .success(let (data, paging, response)):
+    let urls = data.compactMap { 
         URL(string: $0.source[PSPhoto.Size.tiny.rawValue]) 
     }
     // now you can load the image from each URL and 

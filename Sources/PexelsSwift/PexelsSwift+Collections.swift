@@ -32,10 +32,10 @@ public extension PexelsSwift {
         guard let url = components.url else { return .failure(.badURL) }
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
 
-        let result: Result<CollectionResults, PSError> = await fetch(url: url)
+        let result: PSResult<CollectionResults> = await fetch(url: url)
         switch result {
         case .failure(let error): return .failure(error)
-        case .success(let wrapper):
+        case .success(let (wrapper, response)):
             let metaData = PSPagingInfo(
                 page: wrapper.page,
                 perPage: wrapper.perPage,
@@ -43,7 +43,7 @@ public extension PexelsSwift {
                 previousPage: wrapper.previousPage,
                 nextPage: wrapper.nextPage
             )
-            return .success((wrapper.collections, metaData))
+            return .success((wrapper.collections, metaData, response))
         }
     }
 
