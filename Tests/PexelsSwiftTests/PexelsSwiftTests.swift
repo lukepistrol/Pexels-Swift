@@ -11,7 +11,7 @@ import XCTest
 // swiftlint:disable:next type_body_length
 final class PexelsSwiftTests: XCTestCase {
 
-//    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
+    let apiKey = ProcessInfo.processInfo.environment["PEXELS_API_KEY"] ?? ""
 
     let timeOut: TimeInterval = 20
     let logLevel: PSLogLevel = .debug
