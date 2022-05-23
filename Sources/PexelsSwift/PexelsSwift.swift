@@ -169,7 +169,7 @@ public class PexelsSwift {
 
             logger.logResponse(response)
             saveRateLimits(for: response)
-            
+
             guard (200...299).contains(response.statusCode) else {
                 logger.logError(.httpResponse(response.statusCode))
                 return .failure(.httpResponse(response.statusCode))
