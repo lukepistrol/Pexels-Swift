@@ -79,6 +79,11 @@ public class PexelsSwift {
         logger.log("Setup Pexels-Swift complete")
     }
 
+    /// Holds the most recent values for Rate Limit staticstics.
+    ///
+    /// See <doc:Rate-Limits> for more information.
+    public private(set) var rateLimit: RateLimit = .init()
+
     // MARK: - Internal Methods
 
     // MARK: Fetch Photos
@@ -163,7 +168,8 @@ public class PexelsSwift {
             }
 
             logger.logResponse(response)
-
+            saveRateLimits(for: response)
+            
             guard (200...299).contains(response.statusCode) else {
                 logger.logError(.httpResponse(response.statusCode))
                 return .failure(.httpResponse(response.statusCode))
@@ -178,5 +184,22 @@ public class PexelsSwift {
             logger.logError(.generic(error.localizedDescription))
             return .failure(.generic(error.localizedDescription))
         }
+    }
+
+    /// Saves the rate limit data of a given
+    /// [`HTTPURLResponse`](https://developer.apple.com/documentation/foundation/httpurlresponse) to
+    /// ``PexelsSwift/PexelsSwift/rateLimit-swift.property``, if possible
+    /// - Parameter response: The response to fetch the rate limit data from
+    private func saveRateLimits(for response: HTTPURLResponse) {
+        guard let limit = response.pexelsLimit,
+              let remaining = response.pexelsRemaining,
+              let reset = response.pexelsReset
+        else { return }
+
+        self.rateLimit = .init(
+            limit: limit,
+            remaining: remaining,
+            reset: reset
+        )
     }
 }

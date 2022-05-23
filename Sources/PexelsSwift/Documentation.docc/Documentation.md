@@ -65,6 +65,7 @@ I've built a simple iOS app - [PexelsBrowser](https://github.com/lukepistrol/Pex
 ### Essentials
 
 - <doc:Getting-Started>
+- <doc:Rate-Limits>
 
 ### Classes
 
