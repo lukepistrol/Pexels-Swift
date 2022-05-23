@@ -35,8 +35,11 @@ let result = await pexels.getCuratedPhotos()
 switch result {
 case .failure(let error):
     print(error.description)
-case .success(let (photos, pageInfo)):
+case .success(let (data, paging, response)):
     // access photos
+    // data -> [PSPhoto]
+    // paging -> PSPagingInfo
+    // response -> HTTPURLResponse
 }
 
 // fetch images metadata using completion handlers
@@ -44,8 +47,11 @@ pexels.getCuratedPhotos() { result in
     switch result {
     case .failure(let error):
         print(error.description)
-    case .success(let (photos, pageInfo)):
+    case .success(let (data, paging, response)):
         // access photos
+        // data -> [PSPhoto]
+        // paging -> PSPagingInfo
+        // response -> HTTPURLResponse
     }
 }
 ```

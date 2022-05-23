@@ -23,10 +23,10 @@ public extension PexelsSwift {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         guard let url = URL(string: API.videoByID(id))
         else { return .failure(.badURL) }
-        let result: Result<PSVideo, PSError> = await fetch(url: url)
+        let result: PSResult<PSVideo> = await fetch(url: url)
         switch result {
         case .failure(let error): return .failure(error)
-        case .success(let video): return .success(video)
+        case .success(let response): return .success(response)
         }
     }
 

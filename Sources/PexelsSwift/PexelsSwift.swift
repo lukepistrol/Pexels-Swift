@@ -15,22 +15,40 @@ public class PexelsSwift {
     public typealias CategoryID = String
 
     /// Result type for an array of ``PSVideo``.
-    public typealias VideosResult = Result<(content: [PSVideo], metadata: PSPagingInfo), PSError>
+    public typealias VideosResult = Result<(
+        data: [PSVideo],
+        paging: PSPagingInfo,
+        response: HTTPURLResponse
+    ), PSError>
 
     /// Result type for a single ``PSVideo``.
-    public typealias VideoResult = Result<PSVideo, PSError>
+    public typealias VideoResult = Result<(
+        data: PSVideo,
+        response: HTTPURLResponse
+    ), PSError>
 
     /// Result type for an array of ``PSPhoto``.
-    public typealias PhotosResult = Result<(content: [PSPhoto], metadata: PSPagingInfo), PSError>
+    public typealias PhotosResult = Result<(
+        data: [PSPhoto],
+        paging: PSPagingInfo,
+        response: HTTPURLResponse
+    ), PSError>
 
     /// Result type for a single ``PSPhoto``.
-    public typealias PhotoResult = Result<PSPhoto, PSError>
+    public typealias PhotoResult = Result<(
+        data: PSPhoto,
+        response: HTTPURLResponse
+    ), PSError>
 
     /// Result type for an array of ``PSCollection``.
-    public typealias CollectionResult = Result<(content: [PSCollection], metadata: PSPagingInfo), PSError>
+    public typealias CollectionResult = Result<(
+        data: [PSCollection],
+        paging: PSPagingInfo,
+        response: HTTPURLResponse
+    ), PSError>
 
     /// Result type for a generic type of `<T>`.
-    internal typealias PSResult<T> = Result<T, PSError>
+    internal typealias PSResult<T> = Result<(data: T, response: HTTPURLResponse), PSError>
 
     /// The singleton instance of ``PexelsSwift``
     public static let shared: PexelsSwift = .init()
@@ -69,10 +87,10 @@ public class PexelsSwift {
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``PhotosResult``
     internal func fetchPhotos(url: URL) async -> PhotosResult {
-        let result: Result<ContentResults<PSPhoto>, PSError> = await fetch(url: url)
+        let result: PSResult<ContentResults<PSPhoto>> = await fetch(url: url)
         switch result {
         case .failure(let error): return .failure(error)
-        case .success(let wrapper):
+        case .success(let (wrapper, response)):
             let metaData = PSPagingInfo(
                 page: wrapper.page,
                 perPage: wrapper.perPage,
@@ -81,9 +99,9 @@ public class PexelsSwift {
                 nextPage: wrapper.nextPage
             )
             if let photos = wrapper.photos {
-                return .success((photos, metaData))
+                return .success((photos, metaData, response))
             } else if let media = wrapper.media {
-                return .success((media, metaData))
+                return .success((media, metaData, response))
             } else {
                 return .failure(.noContent)
             }
@@ -96,10 +114,10 @@ public class PexelsSwift {
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``VideosResult``
     internal func fetchVideos(url: URL) async -> VideosResult {
-        let result: Result<ContentResults<PSVideo>, PSError> = await fetch(url: url)
+        let result: PSResult<ContentResults<PSVideo>> = await fetch(url: url)
         switch result {
         case .failure(let error): return .failure(error)
-        case .success(let wrapper):
+        case .success(let (wrapper, response)):
             let metaData = PSPagingInfo(
                 page: wrapper.page,
                 perPage: wrapper.perPage,
@@ -108,9 +126,9 @@ public class PexelsSwift {
                 nextPage: wrapper.nextPage
             )
             if let videos = wrapper.videos {
-                return .success((videos, metaData))
+                return .success((videos, metaData, response))
             } else if let media = wrapper.media {
-                return .success((media, metaData))
+                return .success((media, metaData, response))
             } else {
                 return .failure(.noContent)
             }
@@ -154,7 +172,7 @@ public class PexelsSwift {
             logger.logData(data)
 
             let result = try JSONDecoder().decode(T.self, from: data)
-            return .success(result)
+            return .success((result, response))
 
         } catch {
             logger.logError(.generic(error.localizedDescription))

@@ -24,7 +24,7 @@ public extension PexelsSwift {
         guard let url = URL(string: API.photoByID(id))
         else { return .failure(.badURL) }
 
-        let result: Result<PSPhoto, PSError> = await fetch(url: url)
+        let result: PSResult<PSPhoto> = await fetch(url: url)
         switch result {
         case .failure(let error): return .failure(error)
         case .success(let photo): return .success(photo)
