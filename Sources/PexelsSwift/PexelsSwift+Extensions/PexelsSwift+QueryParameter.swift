@@ -12,7 +12,7 @@ internal extension PexelsSwift {
     enum QueryParameter {
         public static let query = "query"
         public static let page = "page"
-        public static let perPage = "par_page"
+        public static let perPage = "per_page"
         public static let orientation = "orientation"
         public static let size = "size"
         public static let color = "color"
