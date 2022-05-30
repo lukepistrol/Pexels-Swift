@@ -10,7 +10,11 @@ import Foundation
 /// A singleton class for making API calls.
 public class PexelsSwift {
 
-    internal init() {}
+    let urlSession: URLSession
+
+    internal init(urlSession: URLSession = .shared) {
+        self.urlSession = urlSession
+    }
 
     public typealias CategoryID = String
 
@@ -157,9 +161,9 @@ public class PexelsSwift {
             var data: Data
             var response: URLResponse
             if #available(macOS 12.0, iOS 15.0, *) {
-                (data, response) = try await URLSession.shared.data(for: req)
+                (data, response) = try await urlSession.data(for: req)
             } else { // async/await compatibility for iOS 13 & macOS 10.15
-                (data, response) = try await URLSession.shared._data(for: req)
+                (data, response) = try await urlSession._data(for: req)
             }
 
             guard let response = response as? HTTPURLResponse else {
