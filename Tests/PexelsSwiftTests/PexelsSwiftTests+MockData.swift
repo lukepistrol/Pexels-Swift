@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable all
 extension PexelsSwiftTests {
     var singlePhoto: String {
 """

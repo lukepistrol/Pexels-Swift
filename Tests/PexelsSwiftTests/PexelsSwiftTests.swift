@@ -8,7 +8,7 @@
 import XCTest
 @testable import PexelsSwift
 
-// swiftlint:disable:next type_body_length
+// swiftlint:disable all
 final class PexelsSwiftTests: XCTestCase {
 
     let apiKey = "API_KEY_PLACEHOLDER"
