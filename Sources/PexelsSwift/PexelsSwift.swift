@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// A singleton class for making API calls.
+/// A singleton class for making API calls to the Pexels.com REST API.
 public class PexelsSwift {
 
     let urlSession: URLSession

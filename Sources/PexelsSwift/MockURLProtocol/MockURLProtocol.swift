@@ -7,7 +7,8 @@
 
 import Foundation
 
-class MockURLProtocol: URLProtocol {
+/// A subclass of `URLProtocol` to intercept URL requests for testing purposes.
+final class MockURLProtocol: URLProtocol {
 
     override class func canInit(with request: URLRequest) -> Bool {
         return true
