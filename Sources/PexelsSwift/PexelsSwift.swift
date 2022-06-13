@@ -83,7 +83,7 @@ public class PexelsSwift {
         logger.log("Setup Pexels-Swift complete")
     }
 
-    /// Holds the most recent values for Rate Limit staticstics.
+    /// Holds the most recent values for Rate Limit statistics.
     ///
     /// See <doc:Rate-Limits> for more information.
     public private(set) var rateLimit: RateLimit = .init()
