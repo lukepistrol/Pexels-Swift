@@ -1,7 +1,11 @@
 <p>
   <img src="https://img.shields.io/badge/Swift-5.6-f05318.svg" />
-  <img src="https://img.shields.io/badge/iOS->= 13-blue.svg" />
+  <img src="https://img.shields.io/badge/iOS->= 13.0-blue.svg" />
   <img src="https://img.shields.io/badge/macOS->= 10.15-blue.svg" />
+  <img src="https://img.shields.io/badge/watchOS->= 6.0-blue.svg" />
+  <img src="https://img.shields.io/badge/tvOS->= 13.0-blue.svg" />
+</p>
+<p>
   <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/lukepistrol/Pexels-Swift/build-documentation?label=CI">
   <img alt="GitHub" src="https://img.shields.io/github/license/lukepistrol/pexels-swift">
   <a href="https://twitter.com/lukeeep_">
