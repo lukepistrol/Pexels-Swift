@@ -6,7 +6,9 @@ let package = Package(
     name: "PexelsSwift",
     platforms: [
         .iOS(.v13),
-        .macOS(.v10_15)
+        .macOS(.v10_15),
+        .tvOS(.v13),
+        .watchOS(.v6),
     ],
     products: [
         .library(
