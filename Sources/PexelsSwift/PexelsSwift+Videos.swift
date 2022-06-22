@@ -22,7 +22,9 @@ public extension PexelsSwift {
     func getVideo(by id: Int) async -> VideoResult {
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
         guard let url = URL(string: API.videoByID(id))
-        else { return .failure(.badURL) }
+        else {
+            return .failure(.badURL(API.videoByID(id)))
+        }
         let result: PSResult<PSVideo> = await fetch(url: url)
         switch result {
         case .failure(let error): return .failure(error)
@@ -62,7 +64,9 @@ public extension PexelsSwift {
         count: Int = 10
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.popularVideos)
-        else { return .failure(.badURL) }
+        else {
+            return .failure(.badURL(API.popularVideos))
+        }
         var param: [URLQueryItem] = [.init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
         if let minimumWidth = minimumWidth {
@@ -79,7 +83,9 @@ public extension PexelsSwift {
         }
 
         components.queryItems = param
-        guard let url = components.url else { return .failure(.badURL) }
+        guard let url = components.url else {
+            return .failure(.badURL(components.debugDescription))
+        }
         return await fetchVideos(url: url)
     }
 
@@ -133,7 +139,9 @@ public extension PexelsSwift {
         count: Int = 10
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.searchVideos)
-        else { return .failure(.badURL) }
+        else {
+            return .failure(.badURL(API.searchVideos))
+        }
         var param: [URLQueryItem] = [.init(name: P.query, value: query),
                                           .init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
@@ -148,7 +156,9 @@ public extension PexelsSwift {
         }
 
         components.queryItems = param
-        guard let url = components.url else { return .failure(.badURL) }
+        guard let url = components.url else {
+            return .failure(.badURL(components.debugDescription))
+        }
         return await fetchVideos(url: url)
     }
 
@@ -196,13 +206,17 @@ public extension PexelsSwift {
         count: Int = 10
     ) async -> VideosResult {
         guard var components: URLComponents = .init(string: API.collections(categoryID))
-        else { return .failure(.badURL) }
+        else {
+            return .failure(.badURL(API.collections(categoryID)))
+        }
         let param: [URLQueryItem] = [.init(name: P.type, value: "videos"),
                                           .init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
 
         components.queryItems = param
-        guard let url = components.url else { return .failure(.badURL) }
+        guard let url = components.url else {
+            return .failure(.badURL(components.debugDescription))
+        }
         return await fetchVideos(url: url)
     }
 

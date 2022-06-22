@@ -24,12 +24,16 @@ public extension PexelsSwift {
         count: Int = 10
     ) async -> CollectionResult {
         guard var components: URLComponents = .init(string: API.featuredCollections)
-        else { return .failure(.badURL) }
+        else {
+            return .failure(.badURL(API.featuredCollections))
+        }
         let param: [URLQueryItem] = [.init(name: P.page, value: page.string),
                                           .init(name: P.perPage, value: count.string)]
 
         components.queryItems = param
-        guard let url = components.url else { return .failure(.badURL) }
+        guard let url = components.url else {
+            return .failure(.badURL(components.debugDescription))
+        }
         guard !apiKey.isEmpty else { return .failure(.noAPIKey) }
 
         let result: PSResult<CollectionResults> = await fetch(url: url)
