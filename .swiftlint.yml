@@ -9,3 +9,6 @@ identifier_name:
     - sd
     - id
   allowed_symbols: ["_"]
+
+excluded:
+  - .build

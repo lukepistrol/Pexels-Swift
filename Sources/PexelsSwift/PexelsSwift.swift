@@ -16,6 +16,7 @@ public class PexelsSwift {
         self.urlSession = urlSession
     }
 
+    /// A String representing a category id.
     public typealias CategoryID = String
 
     /// Result type for an array of ``PSVideo``.
@@ -167,8 +168,8 @@ public class PexelsSwift {
             }
 
             guard let response = response as? HTTPURLResponse else {
-                logger.logError(.noResponse)
-                return .failure(.noResponse)
+                logger.logError(.noResponse(req.debugDescription))
+                return .failure(.noResponse(req.debugDescription))
             }
 
             logger.logResponse(response)

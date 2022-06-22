@@ -33,7 +33,7 @@ final class PexelsSwiftTests: XCTestCase {
     func setRequestHandler(with data: Data?, statusCode: Int = 200) {
         MockURLProtocol.requestHandler = { request in
             guard let url = request.url else {
-                throw PSError.badURL
+                throw PSError.badURL(request.debugDescription)
             }
 
             let response = HTTPURLResponse(

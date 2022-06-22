@@ -48,9 +48,9 @@ class InternalTests: XCTestCase {
     }
 
     func testErrorBadURL() throws {
-        let msg = PSError.badURL.description
+        let msg = PSError.badURL("https://example.com").description
         XCTAssertEqual(
-            "Not a valid URL",
+            "Not a valid URL: https://example.com",
             msg
         )
     }
@@ -80,9 +80,9 @@ class InternalTests: XCTestCase {
     }
 
     func testErrorNoResponse() throws {
-        let msg = PSError.noResponse.description
+        let msg = PSError.noResponse("https://example.com").description
         XCTAssertEqual(
-            "No response from server",
+            "No response from server: https://example.com",
             msg
         )
     }
