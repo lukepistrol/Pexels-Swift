@@ -1,4 +1,4 @@
-// swift-tools-version: 5.6
+// swift-tools-version: 5.7
 
 import PackageDescription
 
@@ -24,7 +24,8 @@ let package = Package(
             name: "PexelsSwift",
             plugins: [
                 .plugin(name: "SwiftLint", package: "SwiftLintPlugin")
-            ]),
+            ])
+        ,
         .testTarget(
             name: "PexelsSwiftTests",
             dependencies: ["PexelsSwift"]),
