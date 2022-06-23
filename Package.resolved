@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin.git",
       "state" : {
-        "revision" : "63997e5c373bde1be2da40b66ca8a1620aee31ca",
-        "version" : "0.0.1"
+        "revision" : "cf620f17721e9eee88cd1f7f8a0741ff0948e50e",
+        "version" : "0.0.2"
       }
     }
   ],
