@@ -67,7 +67,7 @@ public class PexelsSwift {
     internal var apiKey: String = ""
 
     /// An instance of ``PSLogger``
-    internal var logger: PSLogger = .init()
+    public var logger: PSLogger = .init()
 
     // MARK: - Public Methods
 
@@ -81,7 +81,7 @@ public class PexelsSwift {
     public func setup(apiKey: String, logLevel: PSLogLevel = .info) {
         self.apiKey = apiKey
         self.logger.setLogLevel(logLevel)
-        logger.log("Setup Pexels-Swift complete")
+        logger.message("Setup Pexels-Swift complete")
     }
 
     /// Holds the most recent values for Rate Limit statistics.
@@ -151,9 +151,9 @@ public class PexelsSwift {
     /// - Parameter url: The URL to fetch from.
     /// - Returns: A result type of ``PSResult``.
     internal func fetch<T: Codable>(url: URL) async -> PSResult<T> {
-        logger.log("Start fetching from URL: \(url.absoluteString)")
+        logger.message("Start fetching from URL: \(url.absoluteString)")
         guard !apiKey.isEmpty else {
-            logger.logError(.noAPIKey)
+            logger.error(.noAPIKey)
             return .failure(.noAPIKey)
         }
         var req = URLRequest(url: url)
@@ -168,25 +168,25 @@ public class PexelsSwift {
             }
 
             guard let response = response as? HTTPURLResponse else {
-                logger.logError(.noResponse(req.debugDescription))
+                logger.error(.noResponse(req.debugDescription))
                 return .failure(.noResponse(req.debugDescription))
             }
 
-            logger.logResponse(response)
+            logger.response(response)
             saveRateLimits(for: response)
 
             guard (200...299).contains(response.statusCode) else {
-                logger.logError(.httpResponse(response.statusCode))
+                logger.error(.httpResponse(response.statusCode))
                 return .failure(.httpResponse(response.statusCode))
             }
 
-            logger.logData(data)
+            logger.data(data)
 
             let result = try JSONDecoder().decode(T.self, from: data)
             return .success((result, response))
 
         } catch {
-            logger.logError(.generic(error.localizedDescription))
+            logger.error(.generic(error.localizedDescription))
             return .failure(.generic(error.localizedDescription))
         }
     }
