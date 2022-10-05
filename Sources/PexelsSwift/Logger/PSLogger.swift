@@ -7,18 +7,31 @@
 
 import Foundation
 
+/// The delegate for receiving log messages.
+///
+/// This is useful if you use a logging service like Sentry and need to inject the messages.
+public protocol PSLoggerDelegate: AnyObject {
+    /// This is called whenever a log happens in the scope of the ``PSLogLevel``
+    func psLoggerMessageReceived(_ message: String)
+}
+
 /// A logger for displaying logs in the console.
 ///
 /// Setup the logger through ``PexelsSwift/PexelsSwift``'s ``PexelsSwift/PexelsSwift/setup(apiKey:logLevel:)`` method.
 ///
 /// - Note: Remember to set the ``PSLogLevel`` to ``PSLogLevel/off`` once
 /// moving to `production`!
-public struct PSLogger {
+public class PSLogger {
 
     private typealias RateLimit = PexelsSwift.RateLimitType
 
     /// Returns the current ``PSLogLevel``.
     public private(set) var logLevel: PSLogLevel
+
+    /// The delegate for receiving log messages.
+    ///
+    /// This is useful if you use a logging service like Sentry and need to inject the messages.
+    public weak var delegate: PSLoggerDelegate?
 
     internal init() {
         self.logLevel = .info
@@ -26,7 +39,6 @@ public struct PSLogger {
 
     /// Set the ``logLevel`` of the logger.
     /// - Parameter logLevel: The log level
-    mutating
     func setLogLevel(_ logLevel: PSLogLevel) {
         self.logLevel = logLevel
     }
@@ -36,10 +48,12 @@ public struct PSLogger {
     /// - Note: Only logs to the console if the ``logLevel`` is
     /// **not** set to ``PSLogLevel/off``
     /// - Parameter message: The message to log.
-    func log(_ message: String) {
+    func message(_ message: String) {
         guard logLevel != .off else { return }
-        print("💬 Pexels-Swift")
-        print("\t\(message)")
+        var logMessage = logTitle(for: .info)
+        logMessage.append(message)
+        print(logMessage)
+        delegate?.psLoggerMessageReceived(logMessage)
     }
 
     /// Logs a ``PSError`` to the console
@@ -47,10 +61,12 @@ public struct PSLogger {
     /// - Note: Only logs to the console if the ``logLevel`` is
     /// set to ``PSLogLevel/error``, ``PSLogLevel/info``, or ``PSLogLevel/debug``.
     /// - Parameter error: The error to log.
-    func logError(_ error: PSError) {
+    func error(_ error: PSError) {
         guard logLevel != .off else { return }
-        print("🛑 Pexels-Swift")
-        print("\tError:", error.description)
+        var logMessage = logTitle(for: .error)
+        logMessage.append("Error: \(error.description)")
+        print(logMessage)
+        delegate?.psLoggerMessageReceived(logMessage)
     }
 
     /// Logs a [HTTPURLResponse](https://developer.apple.com/documentation/foundation/httpurlresponse) to the console
@@ -58,33 +74,61 @@ public struct PSLogger {
     /// - Note: Only logs to the console if the ``logLevel`` is
     /// ``PSLogLevel/info`` or ``PSLogLevel/debug``.
     /// - Parameter response: The response to log.
-    func logResponse(_ response: HTTPURLResponse) {
+    func response(_ response: HTTPURLResponse) {
         guard logLevel == .info || logLevel == .debug else { return }
-        print("🔁 Pexels-Swift")
-        print("\tCode: \(response.statusCode),")
-        print("\tURL: \(response.url?.absoluteString ?? "Invalid URL")")
+        var logMessage = logTitle(for: .info)
+        logMessage.append("Code: \(response.statusCode),")
+        logMessage.append("URL: \(response.url?.absoluteString ?? "Invalid URL"),")
         if (200...299).contains(response.statusCode) {
-            print("\tRate Limit: \(response.pexelsLimit?.string ?? "Fetching failed")")
-            print("\tRemaining: \(response.pexelsRemaining?.string ?? "Fetching failed")")
-            print("\tReset on: \(response.pexelsReset?.description ?? "Fetching Failed")")
+            logMessage.append("Rate Limit: \(response.pexelsLimit?.string ?? "Fetching failed"),")
+            logMessage.append("Remaining: \(response.pexelsRemaining?.string ?? "Fetching failed"),")
+            logMessage.append("Reset on: \(response.pexelsReset?.description ?? "Fetching Failed")")
         } else {
-            print("\tResponse: \(response.description)")
+            logMessage.append("Response: \(response.description)")
         }
+        print(logMessage)
+        delegate?.psLoggerMessageReceived(logMessage)
     }
 
     /// Logs data to the console in a prettified JSON string
     /// - Note: Only logs to the console if the ``logLevel`` is
     /// ``PSLogLevel/debug``
     /// - Parameter data: The data to log.
-    func logData(_ data: Data) {
+    func data(_ data: Data) {
         guard logLevel == .debug else { return }
         if let json = data.prettyJSON() {
-            print("✅ Pexels-Swift")
-            print("\tData:")
-            print(json)
+            var logMessage = logTitle(for: .success)
+            logMessage.append("Data: \(json)")
+            print(logMessage)
+            delegate?.psLoggerMessageReceived(logMessage)
         } else {
-            print("⚠️ Pexels-Swift")
-            print("\tInvalid JSON Data")
+            var logMessage = logTitle(for: .warning)
+            logMessage.append("Invalid JSON Data")
+            print(logMessage)
+            delegate?.psLoggerMessageReceived(logMessage)
+        }
+    }
+}
+
+extension PSLogger {
+    private func logTitle(for logType: PSLogType) -> String {
+        "\(icon(for: logType)) Pexels-Swift: "
+    }
+
+    private enum PSLogType {
+        case info, success, warning, error
+    }
+
+    private func icon(for logType: PSLogType) -> String {
+        switch logType {
+        case .info:
+            return "💬"
+        case .success:
+            return "✅"
+        case .warning:
+            return "⚠️"
+        case .error:
+            return "🛑"
         }
     }
 }
