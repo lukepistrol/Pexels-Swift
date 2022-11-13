@@ -11,7 +11,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Xcodebuild DocC Action
-        uses: lukepistrol/xcodebuild-docc-action@0.1.2
+        uses: lukepistrol/xcodebuild-docc-action@0.0.1
         with:
           scheme: PexelsSwift
           platform: macos
