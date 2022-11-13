@@ -3,19 +3,20 @@ on:
   push:
     branches:
       - 'main'
+  workflow_dispatch:
 jobs:
   build-docc:
     runs-on: macos-12
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
-      - uses: fwcd/swift-docc-action@v1.0.2
+      - name: Xcodebuild DocC Action
+        uses: lukepistrol/xcodebuild-docc-action@0.1.0
         with:
-          target: PexelsSwift
-          output: ./docs
-          hosting-base-path: Pexels-Swift
-          disable-indexing: 'true'
-          transform-for-static-hosting: 'true'
+          scheme: PexelsSwift
+          platform: macos
+          output-path: ./docs
+          clean: true
       - name: Init new repo in dist folder and commit generated files
         run: |
           cd docs
