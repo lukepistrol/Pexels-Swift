@@ -11,12 +11,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Xcodebuild DocC Action
-        uses: lukepistrol/xcodebuild-docc-action@0.0.5
+        uses: lukepistrol/xcodebuild-docc-action@0.0.6
         with:
           scheme: PexelsSwift
           platform: macos
-          output-path: ./docs
-          clean: true
+          output: ./docs
       - name: Init new repo in dist folder and commit generated files
         run: |
           cd docs
