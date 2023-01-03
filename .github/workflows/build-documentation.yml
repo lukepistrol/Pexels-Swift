@@ -9,13 +9,9 @@ jobs:
     runs-on: macos-12
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
-      - name: Xcodebuild DocC Action
-        uses: lukepistrol/xcodebuild-docc-action@0.0.6
-        with:
-          scheme: PexelsSwift
-          platform: macos
-          output: ./docs
+        uses: actions/checkout@v2
+      - name: Build Documentation
+        run: exec ./.github/scripts/build-docc.sh
       - name: Init new repo in dist folder and commit generated files
         run: |
           cd docs
