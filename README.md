@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/tvOS->= 13.0-blue.svg" />
 </p>
 <p>
-  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/lukepistrol/Pexels-Swift/build-documentation?label=CI">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/lukepistrol/Pexels-Swift/build-documentation.yml?label=CI">
   <img alt="GitHub" src="https://img.shields.io/github/license/lukepistrol/pexels-swift">
   <a href="https://twitter.com/lukeeep_">
     <img src="https://img.shields.io/badge/Twitter-@lukeeep_-1e9bf0.svg?style=flat" alt="Twitter: @lukeeep_" />
