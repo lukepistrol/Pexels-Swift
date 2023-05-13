@@ -1,6 +1,8 @@
 disabled_rules:
   - trailing_comma
   - nesting
+  - large_tuple
+  - blanket_disable_command
 
 identifier_name:
   min_length: 2
