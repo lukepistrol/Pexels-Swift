@@ -78,6 +78,9 @@ public struct PSVideo: Identifiable, Codable, Equatable {
         /// The height in pixels
         public var height: Int?
 
+        /// The frames per second of the ``PSVideo/File``.
+        public var fps: Double?
+
         /// A link to where the ``PSVideo/File`` is hosted.
         public var link: String
 
