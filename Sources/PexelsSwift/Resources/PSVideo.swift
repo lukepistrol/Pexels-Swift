@@ -84,9 +84,9 @@ public struct PSVideo: Identifiable, Codable, Equatable {
         /// A link to where the ``PSVideo/File`` is hosted.
         public var link: String
 
-        /// A collection of possible video qualities `[hd, sd, hls]`.
+        /// A collection of possible video qualities `[hd, sd, hls, uhd]`.
         public enum Quality: String, Codable {
-            case hd, sd, hls
+            case hd, sd, hls, uhd
         }
     }
 
